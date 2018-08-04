@@ -12,6 +12,6 @@ date
 
 ./node_modules/.bin/ng build
 
-END_build_sh
+#END_build_sh
 
 

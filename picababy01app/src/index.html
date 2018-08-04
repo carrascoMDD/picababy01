@@ -1,16 +1,1122 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <meta charset="utf-8">
-    <title>Picababy01app</title>
+    <title>PicaBaby01</title>
     <base href="/">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <script>
+        /*
+         * rowindexfinder.js
+         *
+         * Creado @author Antonio Carrasco Valero 201410161851
+         *
+         ***************************************************************************
+         
+         Copyright 2014 2015 Antonio Carrasco Valero
+         uiwire asynchronous user interface written by Antonio Carrasco Valero in Javascript with AngularJS and licensed under EUPL  http://www.uiwire.org
+         
+         Licensed under the EUPL, Version 1.1 only (the "Licence");
+         You may not use this work except in compliance with the
+         Licence.
+         You may obtain a copy of the Licence at:
+         https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+         Unless required by applicable law or agreed to in
+         writing, software distributed under the Licence is
+         distributed on an "AS IS" basis,
+         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+         express or implied.
+         See the Licence for the specific language governing
+         permissions and limitations under the Licence.
+         {{License2}}
+         
+         {{Licensed1}}
+         {{Licensed2}}
+         
+         ***************************************************************************
+         */
+        
+        var ERRORMSG_MAXLEN = 2048;
+        
+        var PATHTODRILLSEPARATOR = " ";
+        
+        
+        
+        SampleCriteria = function() {
+            var aCriteriaStr = '' +
+                '{' +
+                '   "tableDomId":   "domid_posts_table",' +
+                '   "UNUSED_tableDomName": "mat-table",' +
+                '   "pathToRows":   null,' +
+                '   "rowDomName":   "mat-row",' +
+                '   "pathToCells":  null,' +
+                '   "cellDomName":  "mat-cell",' +
+                '   "columnIndex":  1,' +
+                '   "pathToValue":  null,' +
+                '   "value":        "Post Three",' +
+                '   "trimValue":    true' +
+                '}';
+            var aCriteria = null;
+            try {
+                aCriteria = JSON.parse( aCriteriaStr );
+            }
+            catch( anException ) {
+            }
+            
+            if( !aCriteria ) {
+                return aCriteriaStr;
+            }
+            
+            var aCriteriaJSONstr = JSON.stringify( aCriteria, null, 4 );
+            return aCriteriaJSONstr;
+        };
+        
+        
+        ShowCriteriaArea = function() {
+            
+            var aCriteriaDiv = document.getElementById( "RowIndexFinder_EnterCriteria_div" );
+            if( aCriteriaDiv ) {
+                _ReplaceClass( aCriteriaDiv, "RowIndexFinder_EnterCriteria_Hidden", "RowIndexFinder_EnterCriteria_Shown" );
+                
+                var aCriteriaArea = document.getElementById( "RowIndexFinder_entercriteria_area" );
+                if( aCriteriaArea ) {
+                    
+                    var aCurrentCriteria = aCriteria = aCriteriaArea.value;
+                    if( !aCurrentCriteria ) {
+                        
+                        var aSampleCriteria = SampleCriteria();
+                        if( aSampleCriteria ) {
+                            aCriteriaArea.value = aSampleCriteria;
+                        }
+                    }
+                }
+            }
+            
+            var aShowAreaButton = document.getElementById( "RowIndexFinder_EnterCriteria_button_show" );
+            if( aShowAreaButton ) {
+                _ReplaceClass( aShowAreaButton, "RowIndexFinder_EnterCriteria_Button_Shown", "RowIndexFinder_EnterCriteria_Button_Hidden" );
+            }
+            
+            var aHideAreaButton = document.getElementById( "RowIndexFinder_EnterCriteria_button_hide" );
+            if( aHideAreaButton ) {
+                _ReplaceClass( aHideAreaButton, "RowIndexFinder_EnterCriteria_Button_Hidden", "RowIndexFinder_EnterCriteria_Button_Shown" );
+            }
+        };
+        
+        
+        HideCriteriaArea = function() {
+            
+            var aCriteriaDiv = document.getElementById( "RowIndexFinder_EnterCriteria_div" );
+            if( aCriteriaDiv ) {
+                _ReplaceClass( aCriteriaDiv, "RowIndexFinder_EnterCriteria_Shown", "RowIndexFinder_EnterCriteria_Hidden" );
+            }
+            
+            var aShowAreaButton = document.getElementById( "RowIndexFinder_EnterCriteria_button_show" );
+            if( aShowAreaButton ) {
+                _ReplaceClass( aShowAreaButton, "RowIndexFinder_EnterCriteria_Button_Hidden", "RowIndexFinder_EnterCriteria_Button_Shown" );
+            }
+            
+            var aHideAreaButton = document.getElementById( "RowIndexFinder_EnterCriteria_button_hide" );
+            if( aHideAreaButton ) {
+                _ReplaceClass( aHideAreaButton, "RowIndexFinder_EnterCriteria_Button_Shown", "RowIndexFinder_EnterCriteria_Button_Hidden" );
+            }
+        };
+        
+        
+        EvaluateCriteriaArea = function() {
+            
+            var aCriteria = "";
+            
+            var aCriteriaArea = document.getElementById( "RowIndexFinder_entercriteria_area" );
+            if( aCriteriaArea ) {
+                aCriteria = aCriteria = aCriteriaArea.value;
+            }
+            
+            var aRowIndex = RowIndexFinderJSON( aCriteria );
+            console.log( "RowIndexFinder = " + aRowIndex + " JSON( " + aCriteria + ")" );
+        };
+        
+        
+        
+        
+        ClearRowIndexFinderError = function(theErrorMsg) {
+            
+            var anErrorElement = document.getElementById( "RowIndexFinder_error" );
+            if( !anErrorElement ) {
+                return;
+            }
+            
+            anErrorElement.textContent = "";
+        };
+        
+        
+        
+        
+        ShowRowIndexFinderError = function(theErrorMsg) {
+            
+            var anErrorElement = document.getElementById( "RowIndexFinder_error" );
+            if( !anErrorElement ) {
+                return;
+            }
+            
+            var anErrorMsg = theErrorMsg;
+            if( !anErrorMsg ) {
+                anErrorMsg = "";
+            }
+            if( anErrorMsg.length > ERRORMSG_MAXLEN ) {
+                anErrorMsg = anErrorMsg.substring( 0, ERRORMSG_MAXLEN );
+            }
+            anErrorElement.textContent = anErrorMsg;
+            
+            _ReplaceClass( anErrorElement, "RowIndexFinder_Error_Hidden", "RowIndexFinder_Error_Shown" );
+        };
+        
+        
+        
+        HideRowIndexFinderError = function() {
+            
+            var anErrorElement = document.getElementById( "RowIndexFinder_error" );
+            if( !anErrorElement ) {
+                return;
+            }
+            
+            _ReplaceClass( anErrorElement, "RowIndexFinder_Error_Shown", "RowIndexFinder_Error_Hidden" );
+        };
+        
+        
+        
+        
+        RowIndexFinderJSON = function(theFindCriteriaJSON) {
+            if( !theFindCriteriaJSON ) {
+                ShowRowIndexFinderError( "WARN RowIndexFinderJSON !theFindCriteriaJSON" );
+                return -1;
+            }
+            
+            var aFindCriteria = null;
+            var aParseError = null;
+            try {
+                aFindCriteria = JSON.parse( theFindCriteriaJSON );
+            }
+            catch( anException ) {
+                aParseError = anException ? anException.toString() : "?";
+            }
+            if( !aFindCriteria ) {
+                if( !aParseError ) {
+                    aParseError = "?";
+                }
+                ShowRowIndexFinderError( "WARN RowIndexFinderJSON !theFindCriteriaJSON ParseError=" + aParseError );
+                return -1;
+            }
+            
+            if( !aFindCriteria ) {
+                ShowRowIndexFinderError( "WARN RowIndexFinderJSON !aFindCriteria" );
+                return -1;
+            }
+            
+            return RowIndexFinder( aFindCriteria );
+        };
+        
+        
+        
+        
+        RowIndexFinder = function(theFindCriteria) {
+            
+            ClearRowIndexFinderError();
+            
+            var MAYLOG = false;
+            
+            var aRowIndexFinderElement = document.getElementById( "RowIndexFinder" );
+            if( !aRowIndexFinderElement ) {
+                return -1;
+            }
+            
+            var aRowIndexFinderResultElement = document.getElementById( "RowIndexFinder_result" );
+            var aRowIndexFinderCriteriaElement = document.getElementById( "RowIndexFinder_criteria" );
+            
+            
+            var aShown = false;
+            var aRowIndex = -1;
+            
+            if( !theFindCriteria ) {
+                if( MAYLOG ) {
+                    console.log( "RowIndexFinder NO CRITERIA!!!" );
+                }
+                
+                aRowIndexFinderResultElement.textContent = "NO CRITERIA!!!";
+                aShown = true;
+            }
+            else {
+                var aFindCriteriaStr = JSON.stringify( theFindCriteria );
+                if( aFindCriteriaStr ) {
+                    aRowIndexFinderCriteriaElement.textContent = aFindCriteriaStr;
+                }
+                
+                var aRowIndex = _RowIndexFinder( theFindCriteria );
+                aRowIndexFinderResultElement.textContent = "" + aRowIndex;
+                aShown = true;
+            }
+            
+            if( aShown ) {
+                _ReplaceClass( aRowIndexFinderElement, "RowIndexFinder_Container_Hidden", "RowIndexFinder_Container_Shown" );
+            }
+            
+            return aRowIndex;
+        };
+        
+        
+        
+        
+        var _ReplaceClass = function(theElement, theToRemove, theToAdd) {
+            
+            if( !theElement ) {
+                return;
+            }
+            
+            var aClasses = theElement.className;
+            var aNewClasses = aClasses;
+            if( !aNewClasses ) {
+                aNewClasses = "";
+            }
+            if( theToRemove ) {
+                aNewClasses = aNewClasses.replace( theToRemove, "" );
+            }
+            if( theToAdd ) {
+                aNewClasses = aNewClasses.replace( theToAdd, "" );
+                aNewClasses = aNewClasses + " " + theToAdd;
+            }
+            if( !( aNewClasses === aClasses ) ) {
+                theElement.className = aNewClasses;
+            }
+        };
+        
+        
+        
+        
+        
+        
+        
+        var _RowIndexFinder = function(theFindCriteria) {
+            
+            if( !theFindCriteria ) {
+                return -1;
+            }
+            
+            var aTableId = theFindCriteria[ "tableDomId" ];
+            if( !aTableId ) {
+                return -1;
+            }
+            
+            if( theFindCriteria[ "multiColumns" ] ) {
+                return _RowIndexFinder_MultiColumns( theFindCriteria );
+            }
+            
+            return _RowIndexFinder_SingleColumn( theFindCriteria );
+        }
+        
+        
+        
+        var _ChildNodesNamed = function(theElement, theName) {
+            
+            if( !theElement ) {
+                return null;
+            }
+            
+            if( !theName ) {
+                return null;
+            }
+            
+            var aName = theName.toUpperCase();
+            
+            var someChildNodes = theElement.childNodes;
+            if( !someChildNodes ) {
+                return [];
+            }
+            
+            var aNumChildNodes = someChildNodes.length;
+            if( !aNumChildNodes ) {
+                return [];
+            }
+            
+            var someResultNodes = [];
+            
+            for( var aChildNodeIdx = 0; aChildNodeIdx < aNumChildNodes; aChildNodeIdx++ ) {
+                var aChildNode = someChildNodes[ aChildNodeIdx ];
+                if( !aChildNode ) {
+                    continue;
+                }
+                
+                var aNodeName = aChildNode.nodeName;
+                if( aNodeName === aName ) {
+                    someResultNodes.push( aChildNode );
+                }
+            }
+            
+            return someResultNodes;
+        };
+        
+        
+        
+        
+        var _DrillChildrenPath = function(theElement, thePathToDrill) {
+            
+            if( !theElement ) {
+                return null;
+            }
+            
+            var aResult = theElement;
+            
+            if( thePathToDrill ) {
+                var somePathSteps = thePathToDrill.split( PATHTODRILLSEPARATOR );
+                if( somePathSteps ) {
+                    var aNumPathSteps = somePathSteps.length;
+                    if( aNumPathSteps ) {
+                        var aCurrentElement = theElement;
+                        var aLastPathStep = aNumPathSteps - 1;
+                        
+                        for( var aPathStepIdx = 0; aPathStepIdx < aNumPathSteps; aPathStepIdx++ ) {
+                            var aPathStep = somePathSteps[ aPathStepIdx ];
+                            if( !aPathStep ) {
+                                continue;
+                            }
+                            
+                            var someChildren = _ChildNodesNamed( aCurrentElement, aPathStep );
+                            if( !( someChildren && someChildren.length ) ) {
+                                aResult = null;
+                                break;
+                            }
+                            
+                            if( aPathStepIdx === aLastPathStep ) {
+                                aResult = someChildren;
+                                break;
+                            }
+                            aCurrentElement = someChildren[ 0 ];
+                        }
+                    }
+                }
+            }
+            
+            return aResult;
+        };
+        
+        
+        
+        
+        
+        
+        var _RowIndexFinder_SingleColumn = function(theFindCriteria) {
+            
+            if( !theFindCriteria ) {
+                return -1;
+            }
+            
+            var aTableId = theFindCriteria[ "tableDomId" ];
+            if( !aTableId ) {
+                return -1;
+            }
+            
+            var aColumnIndex = theFindCriteria[ "columnIndex" ];
+            if( !typeof aColumnIndex == "number" ) {
+                return -1;
+            }
+            
+            var anExpèctedValue = theFindCriteria[ "value" ];
+            if( typeof anExpèctedValue == "undefined" ) {
+                return -1;
+            }
+            
+            if( ( typeof anExpèctedValue == "number" ) ) {
+                aValue = "" + aValue;
+            }
+            
+            var aCellDomName = theFindCriteria[ "cellDomName" ];
+            if( !aCellDomName ) {
+                return -1;
+            }
+            
+            var aTrimValue = theFindCriteria[ "trimValue" ];
+            if( aTrimValue ) {
+                anExpèctedValue = anExpèctedValue.trim();
+            }
+            
+            var anExact = true;
+            
+            if( anExpèctedValue.indexOf( "*" ) == 0 ) {
+                anExpèctedValue = anExpèctedValue.replaceAll( "*", "" );
+                anExact = false;
+            }
+            
+            
+            var aTable = document.getElementById( aTableId );
+            if( !aTable ) {
+                return -1;
+            }
+            
+            var aRowsContainer = aTable;
+            var aPathToRows = theFindCriteria[ "pathToRows" ];
+            if( aPathToRows ) {
+                aRowsContainer = _DrillChildrenPath( aRowsContainer, aPathToRows );
+            }
+            if( !aRowsContainer ) {
+                return -1;
+            }
+            
+            var aRowDomName = theFindCriteria[ "rowDomName" ];
+            if( !aRowDomName ) {
+                aRowDomName = "tr";
+            }
+            
+            var someRows = _ChildNodesNamed( aRowsContainer, aRowDomName );
+            if( !someRows || !someRows.length ) {
+                return -1;
+            }
+            
+            var aNumRows = someRows.length;
+            if( !aNumRows ) {
+                return -1;
+            }
+            
+            var aPathToCells = theFindCriteria[ "pathToCells" ];
+            var aPathToValue = theFindCriteria[ "pathToValue" ];
+            
+            
+            for( var aRowIdx = 0; aRowIdx < aNumRows; aRowIdx++ ) {
+                
+                var aRow = someRows[ aRowIdx ];
+                if( !aRow ) {
+                    continue;
+                }
+                
+                var aCellContainer = aRow;
+                if( aPathToCells ) {
+                    aCellContainer = _DrillChildrenPath( aCellContainer, aPathToCells );
+                }
+                if( !aCellContainer ) {
+                    continue;
+                }
+                
+                var someCells = _ChildNodesNamed( aCellContainer, aCellDomName );
+                if( !someCells ) {
+                    continue;
+                }
+                
+                var aNumCells = someCells.length;
+                if( !aNumCells ) {
+                    continue;
+                }
+                
+                if( aColumnIndex >= aNumCells ) {
+                    continue;
+                }
+                
+                var aCell = someCells[ aColumnIndex ];
+                if( !aCell ) {
+                    continue;
+                }
+                
+                var aValueContainer = aCell;
+                
+                if( aPathToValue ) {
+                    aValueContainer = _DrillChildrenPath( aPathToValue );
+                }
+                if( !aValueContainer ) {
+                    continue;
+                }
+                
+                var anOrigCellValue = aValueContainer.textContent;
+                var aCellValue = anOrigCellValue;
+                if( aTrimValue ) {
+                    aCellValue = aCellValue.trim();
+                }
+                if( anExact ) {
+                    if( aCellValue == anExpèctedValue ) {
+                        return aRowIdx;
+                    }
+                }
+                else {
+                    if( aCellValue.indexOf( anExpèctedValue ) >= 0 ) {
+                        return aRowIdx;
+                    }
+                }
+            }
+            
+            return -1;
+        };
+        
+        
+        
+        
+        
+        
+        
+        
+        var _RowIndexFinder_MultiColumns = function(theFindCriteria) {
+            
+            if( !theFindCriteria ) {
+                return -1;
+            }
+            
+            var aTableId = theFindCriteria[ "tableId" ];
+            if( !aTableId ) {
+                return -1;
+            }
+            
+            
+            var someMultiColumns = theFindCriteria[ "multiColumns" ];
+            if( !someMultiColumns ) {
+                return -1;
+            }
+            
+            var aNumMultiColumns = someMultiColumns.length;
+            if( !aNumMultiColumns ) {
+                return -1;
+            }
+            
+            
+            
+            var someValuesToSelect = [];
+            
+            
+            
+            for( var aColumnIdx = 0; aColumnIdx < aNumMultiColumns; aColumnIdx++ ) {
+                
+                var aColumnCriteria = someMultiColumns[ aColumnIdx ];
+                if( aColumnCriteria ) {
+                    
+                    var aColumnIndex = aColumnCriteria[ "columnIndex" ];
+                    if( !typeof aColumnIndex == "number" ) {
+                        return -1;
+                    }
+                    
+                    var aSpanIndex = aColumnCriteria[ "spanIndex" ];
+                    if( !typeof aSpanIndex == "number" ) {
+                        aSpanIndex = undefined;
+                    }
+                    
+                    var aValue = aColumnCriteria[ "value" ];
+                    if( typeof aValue == "undefined" ) {
+                        return -1;
+                    }
+                    
+                    if( ( typeof aValue == "number" ) ) {
+                        aValue = "" + aValue;
+                    }
+                    
+                    someValuesToSelect.push( aValue );
+                }
+            }
+            
+            
+            var anExact = true;
+            
+            if( aValue.indexOf( "*" ) == 0 ) {
+                aValue = aValue.replaceAll( "*", "" );
+                anExact = false;
+            }
+            
+            
+            
+            var aTable = $( "#" + aTableId );
+            if( !aTable || !aTable.length ) {
+                return -1;
+            }
+            
+            var aTBody = aTable.children( "tbody" );
+            if( !aTBody || !aTBody.length ) {
+                return -1;
+            }
+            
+            var someRows = aTBody.children();
+            if( !someRows || !someRows.length ) {
+                return -1;
+            }
+            
+            
+            var aNumRows = someRows.length;
+            if( !aNumRows ) {
+                return -1;
+            }
+            
+            for( var aRowIdx = 0; aRowIdx < aNumRows; aRowIdx++ ) {
+                
+                var aRow = someRows[ aRowIdx ];
+                var aJQRow = $( aRow );
+                
+                var someCells = aJQRow.children( "td" );
+                if( !someCells ) {
+                    continue;
+                }
+                
+                var aNumCells = someCells.length;
+                if( !aNumCells ) {
+                    continue;
+                }
+                
+                
+                var aNumColumnsMatching = false;
+                
+                for( var aColumnIdx = 0; aColumnIdx < aNumMultiColumns; aColumnIdx++ ) {
+                    
+                    var aColumnCriteria = someMultiColumns[ aColumnIdx ];
+                    if( aColumnCriteria ) {
+                        
+                        var aValueToSelect = someValuesToSelect[ aColumnIdx ];
+                        
+                        if( aColumnIndex >= aNumCells ) {
+                            break;
+                        }
+                        
+                        var aCell = someCells[ aColumnIndex ];
+                        if( !aCell ) {
+                            break;
+                        }
+                        
+                        var anElementWithValue = aCell;
+                        
+                        
+                        if( typeof aSpanIndex == "number" ) {
+                            
+                            var aJQCell = $( aCell );
+                            var someSpan = aJQCell.children( "span" );
+                            if( !someSpan ) {
+                                break;
+                            }
+                            
+                            var aNumSpan = someSpan.length;
+                            if( !aNumSpan ) {
+                                break;
+                            }
+                            
+                            if( aSpanIndex >= aNumSpan ) {
+                                break;
+                            }
+                            
+                            anElementWithValue = someSpan[ aSpanIndex ];
+                        }
+                        
+                        
+                        var aJQElementWithValue = $( anElementWithValue );
+                        
+                        var aOneValue = aJQElementWithValue.text();
+                        if( anExact ) {
+                            if( aOneValue == aValue ) {
+                                aNumColumnsMatching += 1;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                        else {
+                            if( aOneValue.indexOf( aValue ) >= 0 ) {
+                                aNumColumnsMatching += 1;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if( aNumColumnsMatching == aNumMultiColumns ) {
+                    return aRowIdx;
+                }
+            }
+            
+            
+            return -1;
+        };
+    </script>
 </head>
 <body>
+
+<!--
+*
+* runningtest-inspector.html
+*
+* Creado @author Antonio Carrasco Valero 201410281840
+*
+***************************************************************************
+
+ Copyright 2014 2015 Antonio Carrasco Valero
+ uiwire asynchronous user interface written by Antonio Carrasco Valero in Javascript with AngularJS and licensed under EUPL  http://www.uiwire.org
+
+Licensed under the EUPL, Version 1.1 only (the "Licence");
+You may not use this work except in compliance with the
+Licence.
+You may obtain a copy of the Licence at:
+https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+Unless required by applicable law or agreed to in
+writing, software distributed under the Licence is
+distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied.
+See the Licence for the specific language governing
+permissions and limitations under the Licence.
+ {{License2}}
+
+ {{Licensed1}}
+ {{Licensed2}}
+
+ ***************************************************************************
+*
+* -->
+<style>
+    
+    div.RunningTest_Container_Shown {
+        display:       block;
+        width:         100%;
+        margin-top:    18px;
+        margin-bottom: 18px;
+    }
+    
+    div.RunningTest_Container_Hidden {
+        display: none;
+    }
+    
+    div.RunningTest_Current {
+        display:     block;
+        width:       100%;
+        height:      16px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    span.RunningTest_Label {
+        display:     inline-block;
+        width:       100%;
+        height:      16px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        10px;
+    }
+    
+    span.RunningTest_Value {
+        display:     inline-block;
+        width:       100%;
+        height:      32px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        64px;
+    }
+    
+    div.RunningTest_Full {
+        display:     block;
+        width:       100%;
+        height:      48px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    span.RunningTest_ValueTall {
+        display:     inline-block;
+        width:       100%;
+        height:      48px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        64px;
+    }
+    
+    br.RunningTest_full_br {
+        display:     block;
+        margin-top:  16px;
+        line-height: 16px;
+    }
+
+</style>
+
+<div id="RunningTest" class="RunningTest_Container_Hidden">
+    
+    <div class="RunningTest_Current">
+        <span class="RunningTest_Label">Current</span>
+        <span class="RunningTest_Value" id="RunningTest_current">?</span>
+    </div>
+    <div class="RunningTest_Full">
+        <span class="RunningTest_Label">Full</span>
+        <span class="RunningTest_ValueTall" id="RunningTest_full">?</span>
+    </div>
+    <!--
+    <div style="display: block; height: 40px;" >
+        <span style="text-align: left; position: absolute; left: 150px; display: inline-block;"
+              id="RunningTest_extra">?</span>
+    </div>
+    -->
+    <!--
+    <div style="display: block; height: 80px;" >
+        <span style="color:black; line-height: 12px; text-align: left; font-size:10px; position: absolute; left: 10px; display: inline-block;">Json</span>
+        <span style="text-align: left; position: absolute; left: 150px; display: inline-block;"
+              id="RunningTest_json">?</span>
+    </div>
+    -->
+</div>
+<!-- END runningtest-inspector.html -->
+
+
+
+<!--
+*
+* rowindexfinder-inspector.html
+*
+* Creado @author Antonio Carrasco Valero 201410281840
+*
+***************************************************************************
+
+ Copyright 2014 2015 Antonio Carrasco Valero
+ uiwire asynchronous user interface written by Antonio Carrasco Valero in Javascript with AngularJS and licensed under EUPL  http://www.uiwire.org
+
+Licensed under the EUPL, Version 1.1 only (the "Licence");
+You may not use this work except in compliance with the
+Licence.
+You may obtain a copy of the Licence at:
+https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+Unless required by applicable law or agreed to in
+writing, software distributed under the Licence is
+distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied.
+See the Licence for the specific language governing
+permissions and limitations under the Licence.
+ {{License2}}
+
+ {{Licensed1}}
+ {{Licensed2}}
+
+ ***************************************************************************
+*
+* -->
+
+
+<style>
+    
+    div.RowIndexFinder_Container_Shown {
+        display:       block;
+        width:         100%;
+        margin-top:    18px;
+        margin-bottom: 18px;
+    }
+    
+    div.RowIndexFinder_Container_Hidden {
+        display: none;
+    }
+    
+    div.RowIndexFinder_Criteria {
+        display:     block;
+        width:       100%;
+        height:      auto;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    span.RowIndexFinder_Label {
+        display:     inline;
+        height:      16px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    span.RowIndexFinder_Criteria {
+        display:     inline-block;
+        width:       100%;
+        height:      auto;
+        min-height:  18px;
+        max-height:  160px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        64px;
+    }
+    
+    div.RowIndexFinder_Result {
+        display:     block;
+        width:       100%;
+        height:      18px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    span.RowIndexFinder_Result {
+        display:     inline-block;
+        width:       100%;
+        height:      18px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        64px;
+    }
+    
+    div.RowIndexFinder_Error_Shown {
+        display:     block;
+        width:       100%;
+        height:      18px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    div.RowIndexFinder_Error_Hidden {
+        display: none;
+    }
+    
+    span.RowIndexFinder_Error {
+        display:     inline-block;
+        width:       100%;
+        height:      18px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+        position:    absolute;
+        left:        64px;
+    }
+    
+    div.RowIndexFinder_EnterCriteria_Shown {
+        display:     block;
+        width:       100%;
+        height:      auto;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    div.RowIndexFinder_EnterCriteria_Hidden {
+        display: none;
+    }
+    
+    textarea.RowIndexFinder_CriteriaArea {
+        display:      block;
+        width:        95%;
+        height:       80px;
+        line-height:  12px;
+        color:        black;
+        font-weight:  bold;
+        font-size:    10px;
+        text-align:   left;
+        border-color: black;
+        border-width: 1px;
+    }
+    
+    button.RowIndexFinder_EnterCriteria_Button_Shown {
+        display:     inline-block;
+        width:       80px;
+        height:      16px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+    
+    button.RowIndexFinder_EnterCriteria_Button_Hidden {
+        display: none;
+    }
+    
+    button.RowIndexFinder_EnterCriteria_Button_Evaluate {
+        display:     inline;
+        width:       120px;
+        height:      16px;
+        line-height: 12px;
+        color:       black;
+        font-weight: bold;
+        font-size:   10px;
+        text-align:  left;
+    }
+
+</style>
+
+<div id="RowIndexFinder" class="RowIndexFinder_Container_Shown">
+    
+    <div class="RowIndexFinder_Result">
+        <span class="RowIndexFinder_Label">RowIndex</span>
+        <span class="RowIndexFinder_Result" id="RowIndexFinder_result">?</span>
+    </div>
+    <div class="RowIndexFinder_Criteria">
+        <span class="RowIndexFinder_Label">Criteria</span>
+        <span class="RowIndexFinder_Criteria" id="RowIndexFinder_criteria">?</span>
+    </div>
+    <div id="RowIndexFinder_error" class="RowIndexFinder_Error_Hidden">
+        <span class="RowIndexFinder_Label">Error</span>
+        <span class="RowIndexFinder_Error" id="RowIndexFinder_error_span"></span>
+    </div>
+    <div>
+        <button id="RowIndexFinder_EnterCriteria_button_show" class="RowIndexFinder_EnterCriteria_Button_Shown"
+                onclick="ShowCriteriaArea()">Show area
+        </button>
+        <button id="RowIndexFinder_EnterCriteria_button_hide" class="RowIndexFinder_EnterCriteria_Button_Hidden"
+                onclick="HideCriteriaArea()">Hide area
+        </button>
+    </div>
+    <div id="RowIndexFinder_EnterCriteria_div" class="RowIndexFinder_EnterCriteria_Hidden">
+        <br/>
+        <span class="RowIndexFinder_Label">Type Criteria</span>
+        &emsp;
+        &emsp;
+        <button id="RowIndexFinder_EnterCriteria_button_evaluate" class="RowIndexFinder_EnterCriteria_Button_Evaluate"
+                onclick="EvaluateCriteriaArea()">Evaluate Criteria
+        </button>
+        <br/>
+        <br/>
+        <textarea class="RowIndexFinder_CriteriaArea" id="RowIndexFinder_entercriteria_area"></textarea>
+        <br/>
+    </div>
+    <!--
+    <div style="display: block; height: 40px;" >
+        <span style="text-align: left; position: absolute; left: 150px; display: inline-block;"
+              id="RowIndexFinder_extra">?</span>
+    </div>
+    -->
+    <!--
+    <div style="display: block; height: 80px;" >
+        <span style="color:black; line-height: 12px; text-align: left; font-size:10px; position: absolute; left: 10px; display: inline-block;">Json</span>
+        <span style="text-align: left; position: absolute; left: 150px; display: inline-block;"
+              id="RowIndexFinder_json">?</span>
+    </div>
+    -->
+</div>
+<!-- END rowindexfinder-inspector.html -->
+
 <app-root></app-root>
 </body>
 </html>

@@ -1,0 +1,7 @@
+{
+    "clientID":     "Pt2B0bwx9oUH9a54TQ91v4y1Kfqd9vIx",
+    "domain":       "modeldd.eu.auth0.com",
+    "responseType": "token id_token",
+    "redirectUri":  "http://localhost:4200/",
+    "scope":        "openid"
+}

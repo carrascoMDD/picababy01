@@ -14,5 +14,4 @@ date
 # Opens browser to visit
 #   http://localhost:4200/
 
-END_buildandrun_sh
-
+#END_buildandrun_sh

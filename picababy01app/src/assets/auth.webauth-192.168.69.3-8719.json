@@ -1,0 +1,7 @@
+{
+    "clientID":     "Pt2B0bwx9oUH9a54TQ91v4y1Kfqd9vIx",
+    "domain":       "modeldd.eu.auth0.com",
+    "responseType": "token id_token",
+    "redirectUri":  "http://192.168.69.3:8719/",
+    "scope":        "openid"
+}

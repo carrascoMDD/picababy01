@@ -1,0 +1,12 @@
+.mustlogin-alert-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.mustlogin-alert-form > * {
+    width: 100%;
+}
+
+.close{
+    width: 100%;
+}

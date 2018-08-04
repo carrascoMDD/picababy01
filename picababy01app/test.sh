@@ -12,5 +12,5 @@ date
 
 ./node_modules/.bin/ng test
 
-END_test_sh
+#END_test_sh
 
