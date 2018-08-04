@@ -72,6 +72,14 @@
                         </a>
                     </li>
                     <li>
+                        <a id="domid_scene01_anchor"
+                           (click)="goPath('/scene01')"
+                           x-kkrouterLink="/scene01">
+                            <mat-icon class="icon">scene01</mat-icon>
+                            <span class="label">Scene01</span>
+                        </a>
+                    </li>
+                    <li>
                         <a id="domid_logout_anchor"
                            *ngIf="auth.isAuthenticated()"
                            (click)="doLogout()" type="button">

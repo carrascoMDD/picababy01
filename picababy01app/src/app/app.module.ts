@@ -12,6 +12,7 @@ import 'hammerjs';
 import { SidenavService }          from "./sidenav/sidenav-svce";
 import { WelcomeComponent }        from './welcome/welcome.component';
 import { DashboardComponent }      from './dashboard/dashboard.component';
+import { Scene01Component }        from './scene01/scene01.component';
 
 import { MaterialModule } from './material.module';
 import { AppRouters }     from './app.routes';
@@ -31,6 +32,7 @@ import { ConfirmDialogComponent }  from "./confirm-dialog/confirm-dialog.compone
             AppComponent,
             WelcomeComponent,
             DashboardComponent,
+            Scene01Component,
             PostDialogComponent,
             MustloginAlertComponent,
             ConfirmDialogComponent
