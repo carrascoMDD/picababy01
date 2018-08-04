@@ -1,0 +1,40 @@
+{
+    "name": "picababy01",
+    "version": "0.0.1",
+    "description": "Outer npm package to contain angular cli to avoid global install, with the real app in an inner npm package: Model in 3D by programming in BabylonJS a suburban geothermal enabled dwelling for the west Mediterranean coast.",
+    "keywords": [
+        "angular",
+        "single page application",
+        "BabylonJS",
+        "Construction 3D design"
+    ],
+    "homepage": "http://github.com/carrascoMDD/picababy01",
+    "bugs": {
+        "url": "http://github.com/carrascoMDD/picababy01/issues"
+    },
+    "license": "EUPL-1.1",
+    "author": {
+        "name": "Antonio Carrasco Valero",
+        "email": "carrascomdd@gmail.com"
+    },
+    "files": [],
+    "main": null,
+    "bin": {},
+    "man": null,
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/carrascoMDD/picababy01.git"
+    },
+    "scripts": {},
+    "config": {},
+    "dependencies": {},
+    "devDependencies": {
+        "@angular/cli": "^6.0.8"
+    },
+    "maintainers": [
+        {
+            "name": "Antonio Carrasco Valero",
+            "email": "carrascomdd@gmail.com"
+        }
+    ]
+}
