@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidenavService }    from "../sidenav/sidenav-svce";
+import { SidenavService }    from "../../sidenav/sidenav-svce";
 
 
 

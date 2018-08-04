@@ -22,6 +22,12 @@
                 <span class="label">Dashboard</span>
             </a>
             <a mat-list-item
+               (click)="goPath('/scene01')"
+               x-kkrouterLink="/scene01">
+                <mat-icon class="icon">scene01</mat-icon>
+                <span class="label">Scene01</span>
+            </a>
+            <a mat-list-item
                *ngIf="auth.isAuthenticated()"
                (click)="doLogout()" type="button">
                 <mat-icon class="icon">input</mat-icon>

@@ -1,6 +1,8 @@
+import { APP_BASE_HREF }                    from "@angular/common";
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
+    MatDialogModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
@@ -11,25 +13,16 @@ import {
     MatCardModule,
     MatTableModule
 }                                  from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { RouterModule,  Routes } from '@angular/router';
 
-import {MatFormFieldModule} from '@angular/material/form-field';
-
-
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { RouterModule, Routes }    from "@angular/router";
-import { DashboardComponent }      from "../dashboard/dashboard.component";
-import { PostService }             from "../data/post.service";
-import { SidenavService }          from "../sidenav/sidenav-svce";
-import { WelcomeComponent }        from "../welcome/welcome.component";
-
-import { APP_BASE_HREF } from '@angular/common';
-
-import { MustloginAlertComponent } from './mustlogin-alert.component';
-
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialog,  MatDialogRef} from "@angular/material/dialog";
+import { AuthService }      from "../../auth.service";
+import { SidenavService }   from "../../sidenav/sidenav-svce";
+import { WelcomeComponent } from "../welcome/welcome.component";
 
 
+import { DashboardComponent } from './dashboard.component';
+
+import { PostService } from '../../data/post.service';
 
 const routes: Routes = [
     { path: '', component: WelcomeComponent },
@@ -37,16 +30,14 @@ const routes: Routes = [
 ];
 
 
-describe('PostDialogComponent', () => {
-  let component: MustloginAlertComponent;
-  let fixture: ComponentFixture<MustloginAlertComponent>;
-
+describe('DashboardComponent', () => {
+  let component: DashboardComponent;
+  let fixture: ComponentFixture<DashboardComponent>;
 
     beforeEach( async( () => {
         TestBed.configureTestingModule(
             {
                 imports:      [
-                    FormsModule,
                     MatDialogModule,
                     MatSidenavModule,
                     MatToolbarModule,
@@ -57,34 +48,30 @@ describe('PostDialogComponent', () => {
                     MatSelectModule,
                     MatCardModule,
                     MatTableModule,
-                    MatFormFieldModule,
-                    BrowserAnimationsModule,
                     RouterModule.forRoot( routes )
                 ],
                 declarations: [
-                    MustloginAlertComponent,
-                    WelcomeComponent,
-                    DashboardComponent
+                    DashboardComponent,
+                    WelcomeComponent
                 ],
                 providers:    [
-                    PostService,
+                    AuthService,
                     SidenavService,
                     { provide: APP_BASE_HREF, useValue: '/' },
-                    { provide: MatDialogRef, useValue: {} },
-                    { provide: MAT_DIALOG_DATA, useValue: [] },
+                    PostService
                 ],
             } ).compileComponents();
     } ) );
 
-    beforeEach(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MustloginAlertComponent ]
+      declarations: [ DashboardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent( MustloginAlertComponent);
+    fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

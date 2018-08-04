@@ -18,14 +18,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes }    from "@angular/router";
-import { DashboardComponent }      from "../dashboard/dashboard.component";
-import { PostService }             from "../data/post.service";
-import { SidenavService }          from "../sidenav/sidenav-svce";
-import { WelcomeComponent }        from "../welcome/welcome.component";
+import { DashboardComponent }      from "../../pages/dashboard/dashboard.component";
+import { PostService }             from "../../data/post.service";
+import { SidenavService }          from "../../sidenav/sidenav-svce";
+import { WelcomeComponent }        from "../../pages/welcome/welcome.component";
 
 import { APP_BASE_HREF } from '@angular/common';
 
-import { PostDialogComponent } from './post-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog.component';
 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialog,  MatDialogRef} from "@angular/material/dialog";
 
@@ -38,8 +38,8 @@ const routes: Routes = [
 
 
 describe('PostDialogComponent', () => {
-  let component: PostDialogComponent;
-  let fixture: ComponentFixture<PostDialogComponent>;
+  let component: ConfirmDialogComponent;
+  let fixture: ComponentFixture<ConfirmDialogComponent>;
 
 
     beforeEach( async( () => {
@@ -62,7 +62,7 @@ describe('PostDialogComponent', () => {
                     RouterModule.forRoot( routes )
                 ],
                 declarations: [
-                    PostDialogComponent,
+                    ConfirmDialogComponent,
                     WelcomeComponent,
                     DashboardComponent
                 ],
@@ -78,13 +78,13 @@ describe('PostDialogComponent', () => {
 
     beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostDialogComponent ]
+      declarations: [ ConfirmDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PostDialogComponent);
+    fixture = TestBed.createComponent( ConfirmDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,29 +10,29 @@ import {
     MatSidenavModule,
     MatTableModule,
     MatToolbarModule
-} from "@angular/material";
+}                                                         from "@angular/material";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
-import { MatFormFieldModule }                             from "@angular/material/form-field";
-import { BrowserAnimationsModule }                        from "@angular/platform-browser/animations";
-import { RouterModule, Routes }                           from "@angular/router";
-import { DashboardComponent }                             from "../dashboard/dashboard.component";
-import { PostService }                                    from "../data/post.service";
-import { PostDialogComponent }                            from "../post-dialog/post-dialog.component";
-import { SidenavService }                                 from "../sidenav/sidenav-svce";
+import { MatFormFieldModule }      from "@angular/material/form-field";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterModule, Routes }    from "@angular/router";
+import { DashboardComponent }      from "../dashboard/dashboard.component";
+import { PostService }             from "../../data/post.service";
+import { PostDialogComponent }     from "../../modals/post-dialog/post-dialog.component";
+import { SidenavService }          from "../../sidenav/sidenav-svce";
 
-import { Scene01Component} from './scene01.component';
+import { WelcomeComponent } from './welcome.component';
 
 import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
-    { path: '', component: Scene01Component },
-    { path: 'dashboard', component: Scene01Component }
+    { path: '', component: WelcomeComponent },
+    { path: 'dashboard', component: DashboardComponent }
 ];
 
 
-describe( 'Scene01Component', () => {
-    let component: Scene01Component;
-    let fixture: ComponentFixture<Scene01Component>;
+describe( 'WelcomeComponent', () => {
+    let component: WelcomeComponent;
+    let fixture: ComponentFixture<WelcomeComponent>;
 
 
     beforeEach( async( () => {
@@ -56,7 +56,7 @@ describe( 'Scene01Component', () => {
                 ],
                 declarations: [
                     PostDialogComponent,
-                    Scene01Component,
+                    WelcomeComponent,
                     DashboardComponent
                 ],
                 providers:    [
@@ -71,13 +71,13 @@ describe( 'Scene01Component', () => {
 
     beforeEach( async( () => {
         TestBed.configureTestingModule( {
-                                            declarations: [ Scene01Component ]
+                                            declarations: [ WelcomeComponent ]
                                         } )
             .compileComponents();
     } ) );
 
     beforeEach( () => {
-        fixture   = TestBed.createComponent( Scene01Component );
+        fixture   = TestBed.createComponent( WelcomeComponent );
         component = fixture.componentInstance;
         fixture.detectChanges();
     } );

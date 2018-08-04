@@ -10,18 +10,18 @@ import { FormsModule }             from '@angular/forms';
 
 import 'hammerjs';
 import { SidenavService }          from "./sidenav/sidenav-svce";
-import { WelcomeComponent }        from './welcome/welcome.component';
-import { DashboardComponent }      from './dashboard/dashboard.component';
-import { Scene01Component }        from './scene01/scene01.component';
+import { WelcomeComponent }        from './pages/welcome/welcome.component';
+import { DashboardComponent }      from './pages/dashboard/dashboard.component';
+import { Scene01Component }        from './pages/scene01/scene01.component';
 
 import { MaterialModule } from './material.module';
 import { AppRouters }     from './app.routes';
 
-import { PostService }         from './data/post.service';
-import { AuthService }         from './auth.service';
-import { PostDialogComponent } from './post-dialog/post-dialog.component';
-import { MustloginAlertComponent } from './mustlogin-alert/mustlogin-alert.component';
-import { ConfirmDialogComponent }  from "./confirm-dialog/confirm-dialog.component";
+import { PostService }             from './data/post.service';
+import { AuthService }             from './auth.service';
+import { PostDialogComponent }     from './modals/post-dialog/post-dialog.component';
+import { MustloginAlertComponent } from './modals/mustlogin-alert/mustlogin-alert.component';
+import { ConfirmDialogComponent }  from "./modals/confirm-dialog/confirm-dialog.component";
 
 
 

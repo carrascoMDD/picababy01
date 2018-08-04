@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Ball01 }            from "../scenes/ball01";
-import { SidenavService }    from "../sidenav/sidenav-svce";
+import { Ball01 }            from "../../scenes/ball01";
+import { SidenavService }    from "../../sidenav/sidenav-svce";
 
 
 

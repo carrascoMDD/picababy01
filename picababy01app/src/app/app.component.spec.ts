@@ -22,9 +22,9 @@ import { APP_BASE_HREF } from '@angular/common';
 
 
 import { AuthService }        from './auth.service';
-import { DashboardComponent } from "./dashboard/dashboard.component";
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import { SidenavService }     from "./sidenav/sidenav-svce";
-import { WelcomeComponent }   from "./welcome/welcome.component";
+import { WelcomeComponent }   from "./pages/welcome/welcome.component";
 
 
 const routes: Routes = [
