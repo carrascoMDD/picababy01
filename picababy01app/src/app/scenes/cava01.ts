@@ -9,7 +9,7 @@ import {
 
 
 
-const BORDER_ANGLE = Math.PI;
+const BORDER_ANGLE = Math.PI * ( 7 / 5);
 const BORDER_STEPS_DEFAULT = 32;
 const SHEET_STEPS_DEFAULT  = 96;
 
@@ -53,6 +53,9 @@ export class Cava01 {
     private _nearCapMesh: Mesh;
     private _farCapVertexData:  VertexData;
     private _farCapMesh:  Mesh;
+
+    private _outerFloorVertexData: VertexData;
+    private _innerFloorVertexData: VertexData;
 
 
 
@@ -251,7 +254,13 @@ export class Cava01 {
             return this._outerSheetVertexData;
         }
 
-        this._outerSheetVertexData = this.cavaSheetVertexData_calc( theRadius, theLength, this.cavaOuterBorderPoints( theRadius), false /* theReverseFacets */);
+        this._outerSheetVertexData = this.cavaSheetVertexData_calc(
+            theRadius,
+            theLength,
+            this.cavaOuterBorderPoints( theRadius),
+            false /* theReverseFacets */,
+            true /* theBuildFloor */
+        );
         this._outerLastStrutZ = this._lastStrutZ;
         return this._outerSheetVertexData;
     }
@@ -263,14 +272,25 @@ export class Cava01 {
             return this._innerSheetVertexData;
         }
 
-        this._innerSheetVertexData = this.cavaSheetVertexData_calc( theRadius, theLength, this.cavaInnerBorderPoints( theRadius), true  /* theReverseFacets */);
+        this._innerSheetVertexData = this.cavaSheetVertexData_calc(
+            theRadius,
+            theLength,
+            this.cavaInnerBorderPoints( theRadius),
+            true  /* theReverseFacets */,
+            true /* theBuildFloor */
+        );
         this._innerLastStrutZ = this._lastStrutZ;
         return this._innerSheetVertexData;
     }
 
 
 
-    cavaSheetVertexData_calc( theRadius: double, theLength: double, theBorderPoints:  Vector3[], theReverseFacets: Boolean): VertexData {
+    cavaSheetVertexData_calc(
+        theRadius: double,
+        theLength: double,
+        theBorderPoints:  Vector3[],
+        theReverseFacets: Boolean,
+        theBuildFloor: Boolean): VertexData {
 
         const somePositions: double[] = [ ];
         const someIndices:   int[]    = [ ];
@@ -289,20 +309,20 @@ export class Cava01 {
         for( let aStrutIdx=0; aStrutIdx < this._sheetNumStruts; aStrutIdx++) {
 
             // Add positions from the border displaced in Z by a Strut lengh. Each triple of these is a point in a strut of the sheet
-            const aZ = aStrutIdx * theLength / this._sheetNumStruts;
-            this._lastStrutZ = aZ;
+            this._lastStrutZ = aStrutIdx * theLength / this._sheetNumStruts;
             for( let aBorderPointIdx=0; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
                 const aBorderPoint = theBorderPoints[ aBorderPointIdx];
                 somePositions.push( aBorderPoint.x);
                 somePositions.push( aBorderPoint.y);
-                somePositions.push( aZ);
+                somePositions.push( this._lastStrutZ);
             }
         }
 
         // Add indices for the facets between all struts, starting between the strut index 1 and the border (strut 0)
+        // If theBuildFloor then Add indices for the facets between the extremes of the struts, starting between the strut index 1 and the border (strut 0)
         /* Two triangle facets, counter-clock-wise
-          m = n - 1
-          i = j - 1
+          m = n - 1 aStrutIdx
+          i = j - 1 aBorderPointIdx
             SmVi-----------SmVj
                 | facet  /|
                 | 0     / |
@@ -348,10 +368,63 @@ export class Cava01 {
                     // Facet1
                     someIndices.push( anInd_SmVj, anInd_SnVj, anInd_SnVi);
                 }
+            }
 
+
+            if( theBuildFloor) {
+                /* Indices for two triangle facets between the opposite ends of a strut and the predecessor strut
+                   m = n - 1 aStrutIdx
+                   v = aNumBorderPoints - 1
+                    SnV0-----------SmV0
+                        | facet  /|
+                        | 0     / |
+                        |      /  |
+                        |     /   |
+                        |    /    |
+                        |   /     |
+                        |  /      |
+                        | /     1 |
+                        |/  facet |
+                    SnVv-----------SmVv
+
+                Note that for the floor, theReverseFacets works in reverse
+                if theReverseFacets is true then build facets with points order counter-clock-wise (outer sheet)
+                    facet 0:
+                        SnV0, SnVv, SmV0
+                    facet 1:
+                        SnVv,SmVv, SmV0
+
+                if theReverseFacets is false then build facets with points order clock-wise (inner sheet)
+                    facet 0:
+                        SnV0, SmV0, SnVv
+                    facet 1:
+                        SmV0,SmVv, SnVv
+
+                 */
+
+                const anInd_SmV0 = ( aStrutIdx - 1 ) * aNumBorderPoints;
+                const anInd_SmVv = ( ( aStrutIdx - 1 ) * aNumBorderPoints) + ( aNumBorderPoints - 1);
+                const anInd_SnV0 = aStrutIdx * aNumBorderPoints;
+                const anInd_SnVv = ( aStrutIdx * aNumBorderPoints) + + ( aNumBorderPoints - 1);
+
+                if( theReverseFacets) {
+                    // Facet 0
+                    someIndices.push( anInd_SnV0, anInd_SnVv, anInd_SmV0);
+                    // Facet1
+                    someIndices.push( anInd_SnVv, anInd_SmVv, anInd_SmV0);
+                }
+                else {
+                    // Facet 0
+                    someIndices.push( anInd_SnV0, anInd_SmV0, anInd_SnVv);
+                    // Facet1
+                    someIndices.push( anInd_SmV0, anInd_SmVv, anInd_SnVv);
+                }
             }
 
         }
+
+
+
 
         const aVertexData = new VertexData();
         aVertexData.positions = somePositions;
@@ -430,7 +503,7 @@ export class Cava01 {
         /* Two triangle facets, counter-clock-wise
           m = outer
           n = inner
-          i = j - 1
+          i = j - 1 aBorderPointIdx
             SmVi-----------SmVj
                 | facet  /|
                 | 0     / |
