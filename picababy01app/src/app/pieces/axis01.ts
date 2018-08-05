@@ -16,8 +16,8 @@ import int = BABYLON.int;
 export class Axix01 {
 
     constructor( canvasElement: string ) {
-        this._canvas = <HTMLCanvasElement>document.getElementById( canvasElement );
-        this._engine = new Engine( this._canvas, true );
+        // this._canvas = <HTMLCanvasElement>document.getElementById( canvasElement );
+        // this._engine = new Engine( this._canvas, true );
     }
 
 
