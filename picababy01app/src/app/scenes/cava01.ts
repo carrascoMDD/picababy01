@@ -54,9 +54,10 @@ export class Cava01 {
     private _farCapVertexData:  VertexData;
     private _farCapMesh:  Mesh;
 
-    private _outerFloorVertexData: VertexData;
-    private _innerFloorVertexData: VertexData;
-
+    private _floorNearCapVertexData: VertexData;
+    private _floorNearCapMesh: Mesh;
+    private _floorFarCapVertexData:  VertexData;
+    private _floorFarCapMesh:  Mesh;
 
 
 
@@ -107,6 +108,9 @@ export class Cava01 {
 
         this._nearCapMesh = this.cavaNearCap();
         this._farCapMesh  = this.cavaFarCap();
+
+        this._floorNearCapMesh = this.cavaFloorNearCap();
+        this._floorFarCapMesh  = this.cavaFloorFarCap();
     }
 
 
@@ -550,6 +554,131 @@ export class Cava01 {
             }
 
         }
+
+        const aVertexData = new VertexData();
+        aVertexData.positions = somePositions;
+        aVertexData.indices   = someIndices;
+
+        return aVertexData;
+    }
+
+
+
+
+
+    cavaFloorNearCap(): Mesh {
+        const aVertexData = this.cavaFloorNearCapVertexData();
+        const aSheetMesh = new Mesh( "cavaFloorNearCap01", this._scene);
+        aVertexData.applyToMesh( aSheetMesh);
+
+        return aSheetMesh;
+    }
+
+
+    cavaFloorFarCap(): Mesh {
+        const aVertexData = this.cavaFloorFarCapVertexData();
+        const aSheetMesh = new Mesh( "cavaFloorFarCap01", this._scene);
+        aVertexData.applyToMesh( aSheetMesh);
+
+        return aSheetMesh;
+    }
+
+
+
+    cavaFloorNearCapVertexData(): VertexData {
+
+        if( !( this._floorNearCapVertexData == null)) {
+            return this._floorNearCapVertexData;
+        }
+
+        this._floorNearCapVertexData = this.cavaFloorCapVertexData_calc( 0 /* theOuterZ */, 0 /* theInnerZ */, true/* theReverseFacets */);
+        return this._floorNearCapVertexData;
+    }
+
+    cavaFloorFarCapVertexData(): VertexData {
+
+        if( !( this._floorFarCapVertexData == null)) {
+            return this._floorFarCapVertexData;
+        }
+
+        this._floorFarCapVertexData = this.cavaFloorCapVertexData_calc(   this._outerLastStrutZ, this._innerLastStrutZ, false  /* theReverseFacets */);
+        return this._floorFarCapVertexData;
+    }
+
+
+
+    cavaFloorCapVertexData_calc( theOuterZ: double, theInnerZ: double, theReverseFacets: Boolean): VertexData {
+
+        const somePositions: double[] = [ ];
+        const someIndices:   int[]    = [ ];
+
+
+        const anOuterFirstBorderPoint = this._outerBorderPoints[ 0];
+        somePositions.push( anOuterFirstBorderPoint.x);
+        somePositions.push( anOuterFirstBorderPoint.y);
+        somePositions.push( theOuterZ);
+
+        const anOuterLastBorderPoint = this._outerBorderPoints[ this._outerBorderPoints.length - 1];
+        somePositions.push( anOuterLastBorderPoint.x);
+        somePositions.push( anOuterLastBorderPoint.y);
+        somePositions.push( theOuterZ);
+
+
+        const anInnerFirstBorderPoint = this._innerBorderPoints[ 0];
+        somePositions.push( anInnerFirstBorderPoint.x);
+        somePositions.push( anInnerFirstBorderPoint.y);
+        somePositions.push( theInnerZ);
+
+        const anInnerLastBorderPoint = this._innerBorderPoints[ this._innerBorderPoints.length - 1];
+        somePositions.push( anInnerLastBorderPoint.x);
+        somePositions.push( anInnerLastBorderPoint.y);
+        somePositions.push( theInnerZ);
+
+
+        // Add indices for the facets between the outer and the inner first and last border points
+        /* Two triangle facets, counter-clock-wise
+          O = outer
+          I = inner
+          0 first point in border
+          n last point in border
+            0 I0-----------In 1
+                | facet  /|
+                | 0     / |
+                |      /  |
+                |     /   |
+                |    /    |
+                |   /     |
+                |  /      |
+                | /     1 |
+                |/  facet |
+           2  O0-----------On 3
+
+            if theReverseFacets is false then build facets with points order counter-clock-wise (outer sheet)
+                facet 0:
+                    I0, O0, In  0 2 1
+                facet 1:
+                    In, O0, On  1 2 3
+
+          if theReverseFacets is true then build facets with points order clock-wise (inner sheet)
+                facet 0:
+                    I0, In, O0  0 1 2
+                facet 1:
+                    In, On, O0 1 3 2
+        */
+
+        if( theReverseFacets) {
+            // Facet 0
+            someIndices.push( 0, 2, 1);
+            // Facet1
+            someIndices.push( 1, 2, 3);
+        }
+        else {
+            // Facet 0
+            someIndices.push( 0, 1, 2);
+            // Facet1
+            someIndices.push( 1, 3, 2);
+        }
+
 
         const aVertexData = new VertexData();
         aVertexData.positions = somePositions;
