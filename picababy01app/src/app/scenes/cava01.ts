@@ -26,17 +26,17 @@ const BORDER_ANGLE_STOP   = BORDER_ANGLE_END   - BORDER_ANGLE_ROTATE;
 const BORDER_STEPS_DEFAULT = 64;
 const SHEET_STEPS_DEFAULT  = 1;
 
-const OUTERRADIUS  = 1;
+const OUTERRADIUS  = 3;
 const MAXSTEPLEN   = 0.6;
 
 const MAXSTRUTLEN  = 0.2;
 
 
-const OUTERLENGTH  = 3;
-const INNERRADIUS  = 0.9;
-const INNERLENGTH  = 3;
+const OUTERLENGTH  = 8;
+const INNERRADIUS  = 2.5;
+const INNERLENGTH  = 8;
 
-const CAMERA_RADIUS = 5;
+const CAMERA_RADIUS = 10;
 
 
 
