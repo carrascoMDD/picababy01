@@ -15,7 +15,14 @@ import StandardMaterial = BABYLON.StandardMaterial;
 const AXIS_SIZE  = 1.5;
 const AXIS_STRETCH_Z = 2.5;
 
-const BORDER_ANGLE = Math.PI * ( 6 / 5);
+const BORDER_ANGLE = Math.PI * ( 7 / 5);
+const BORDER_ANGLE_BEGIN = 0.0 - BORDER_ANGLE / 2;
+const BORDER_ANGLE_END   = BORDER_ANGLE / 2;
+
+const BORDER_ANGLE_ROTATE = 0.0 - Math.PI / 2;
+const BORDER_ANGLE_START  = BORDER_ANGLE_BEGIN - BORDER_ANGLE_ROTATE;
+const BORDER_ANGLE_STOP   = BORDER_ANGLE_END   - BORDER_ANGLE_ROTATE;
+
 const BORDER_STEPS_DEFAULT = 64;
 const SHEET_STEPS_DEFAULT  = 1;
 
@@ -40,6 +47,8 @@ export class Cava01 {
     private _camera: FreeCamera;
     private _light: Light;
 
+    private _borderAngleStart: double;
+    private _borderAngleStop: double;
     private _borderAngle: double;
     private _borderMaxStepLen: double;
     private _borderNumSteps: int;
@@ -69,6 +78,7 @@ export class Cava01 {
     private _floorNearCapMesh: Mesh;
     private _floorFarCapVertexData:  VertexData;
     private _floorFarCapMesh:  Mesh;
+
 
 
 
@@ -110,7 +120,7 @@ export class Cava01 {
         // Add and keep elements
 
         // Call first cavaBorderNumSteps_calcAndSet for the Outer Border which shall set the Angle, and calculate the NumSteps, both of which shall be reused in the inner ond outer borders and sheets
-        this.cavaBorderNumSteps_calcAndSet(  OUTERRADIUS, MAXSTEPLEN, BORDER_ANGLE);
+        this.cavaBorderNumSteps_calcAndSet(  OUTERRADIUS, MAXSTEPLEN, BORDER_ANGLE_START, BORDER_ANGLE_STOP);
 
         // Call first cavaSheetNumStruts_calcAndSet for the Outer Sheet which shall set the NumStruts, which shall be reused in the inner ond outer sheets
         this.cavaSheetNumStruts_calcAndSet( OUTERLENGTH, MAXSTRUTLEN);
@@ -134,13 +144,15 @@ export class Cava01 {
 
 
 
-    cavaBorderNumSteps_calcAndSet( theRadius: double, theMaxStepLen: double, theAngle: double): int {
+    cavaBorderNumSteps_calcAndSet( theRadius: double, theMaxStepLen: double, theAngleStart: double, theAngleStop: double): int {
 
         this._borderMaxStepLen = theMaxStepLen;
-        this._borderAngle      = theAngle;
+        this._borderAngleStart = theAngleStart;
+        this._borderAngleStop  = theAngleStop;
+        this._borderAngle      = this._borderAngleStop - this._borderAngleStart;
 
         const aCircleLen = 2 * Math.PI * theRadius;
-        const anArcLen = aCircleLen * ( theAngle / ( 2 * Math.PI));
+        const anArcLen = aCircleLen * ( this._borderAngle / ( 2 * Math.PI));
 
         this._borderNumSteps = BORDER_STEPS_DEFAULT;
         const aTileLen = anArcLen / this._borderNumSteps;
@@ -217,23 +229,20 @@ export class Cava01 {
         const someBorderPoints: Vector3[] = [ ];
 
         const aCenter = Vector2.Zero();
-        const aHalfAngle = this._borderAngle / 2;
 
         for( let anStepIdx=0; anStepIdx < this._borderNumSteps; anStepIdx++) {
-            const anAngle = ( 0 - aHalfAngle) + ( this._borderAngle * anStepIdx) / this._borderNumSteps;
+            const anAngle = this._borderAngleStart +  this._borderAngle * anStepIdx / this._borderNumSteps;
             const aBorderPoint = this.cavaBorderPoint( aCenter, theRadius, anAngle);
             someBorderPoints.push( aBorderPoint);
         }
-
-        console.log( "someBorderPoints.length=" + someBorderPoints.length);
         return someBorderPoints;
     }
 
 
     cavaBorderPoint( theCenter: Vector2, theRadius: double, theAngle: double): Vector3 {
 
-        let anX = theRadius * Math.cos( theAngle);
-        let anY = theRadius * Math.sin( theAngle);
+        let anX = Math.cos( theAngle) * theRadius;
+        let anY = Math.sin( theAngle)  * theRadius;
         anX += theCenter.x;
         anY += theCenter.y;
 
