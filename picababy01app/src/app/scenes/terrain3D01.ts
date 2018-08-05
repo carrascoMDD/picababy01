@@ -40,13 +40,51 @@ export class Terrain3D01 {
 
         let someCoords = Terrain3D01Coords.COORDS;
         let aNumCoords = someCoords.length;
+
+        let aMinX= 1000000000;
+        let aMinY= 1000000000;
+        let aMaxX= -1000000000;
+        let aMaxY= -1000000000;
+
+        for( let aCoordIdx=0; aCoordIdx < aNumCoords; aCoordIdx++) {
+            let aCoord = someCoords[ aCoordIdx];
+            let anX = aCoord[ 0];
+            if( anX > aMaxX) {
+                aMaxX = anX;
+            }
+            else {
+                if( anX < aMinX) {
+                    aMinX = anX;
+                }
+            }
+
+            let anY = aCoord[ 1];
+            if( anY > aMaxY) {
+                aMaxY = anY;
+            }
+            else {
+                if( anY < aMinY) {
+                    aMinY = anY;
+                }
+            }
+        }
+
+        let aWidth  = aMaxX - aMinX;
+        let aHeight = aMaxY - aMinY;
+        let aHalfWidth  = aWidth / 2;
+        let aHalfHeight  = aHeight / 2;
+
+        let aCenterX = aMinX + aHalfWidth;
+        let aCenterY = aMinY + aHalfHeight;
+
+
         for( let aCoordIdx=0; aCoordIdx < aNumCoords; aCoordIdx++) {
             let aCoord = someCoords[ aCoordIdx];
             let aVector3 = new Vector3(
-                aCoord[ 0] - SUBSTRACTFROM_X,
+                aCoord[ 0] - aCenterX,
                 0,
-                aCoord[ 1] - SUBSTRACTFROM_Y,
-                );
+                aCoord[ 1] - aCenterY,
+            );
             someVector3.push( aVector3);
         }
         return someVector3;
@@ -59,7 +97,7 @@ export class Terrain3D01 {
 
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
         // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
-        this._camera = new FreeCamera( 'camera1', new Vector3( 130, 115, 130 ), this._scene );
+        this._camera = new FreeCamera( 'camera1', new Vector3( 0, 100, 0 ), this._scene );
 
         // target the camera to scene origin
         this._camera.setTarget( Vector3.Zero() );
