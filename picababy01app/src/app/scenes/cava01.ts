@@ -1,18 +1,22 @@
 import {
     int, double,
     Vector2, Vector3,
+    Color3,
     Engine, Scene, FreeCamera, Light,
+    DynamicTexture,
     MeshBuilder, VertexData, Mesh,
     HemisphericLight,
     ArcRotateCamera
 } from 'babylonjs';
+import StandardMaterial = BABYLON.StandardMaterial;
 
 
 
+const AXIS_SIZE  = 1.5;
+const AXIS_STRETCH_Z = 2.5;
 
-
-const BORDER_ANGLE = Math.PI * ( 8 / 5);
-const BORDER_STEPS_DEFAULT = 128;
+const BORDER_ANGLE = Math.PI * ( 6 / 5);
+const BORDER_STEPS_DEFAULT = 64;
 const SHEET_STEPS_DEFAULT  = 1;
 
 const OUTERRADIUS  = 1;
@@ -98,6 +102,10 @@ export class Cava01 {
 
         // create a basic light, aiming 0,1,0 - meaning, to the sky
         this._light = new HemisphericLight( 'light1', new Vector3( 0, 1, 0 ), this._scene );
+
+
+        // axis
+        this.showAxis( AXIS_SIZE);
 
         // Add and keep elements
 
@@ -694,6 +702,47 @@ export class Cava01 {
 
         return aVertexData;
     }
+
+
+
+    makeTextPlane( theText: string, theColor: string, theSize: number): Mesh {
+        const dynamicTexture = new DynamicTexture("DynamicTexture", 50, this._scene, true);
+        dynamicTexture.hasAlpha = true;
+        dynamicTexture.drawText( theText, 5, 40, "bold 36px Arial", theColor , "transparent", true);
+        var plane = Mesh.CreatePlane("TextPlane", theSize, this._scene, true);
+        plane.material = new StandardMaterial("TextPlaneMaterial", this._scene);
+        plane.material.backFaceCulling = false;
+        (<StandardMaterial>plane.material).specularColor = new Color3(0, 0, 0);
+        (<StandardMaterial>plane.material).diffuseTexture = dynamicTexture;
+        return plane;
+    };
+
+
+
+    showAxis( theSize: number) : void {
+
+        var axisX = Mesh.CreateLines("axisX", [
+            Vector3.Zero(), new Vector3(theSize, 0, 0), new Vector3(theSize * 0.95, 0.05 * theSize, 0),
+            new Vector3(theSize, 0, 0), new Vector3(theSize * 0.95, -0.05 * theSize, 0)
+        ], this._scene);
+        axisX.color = new Color3(1, 0, 0);
+        var xChar = this.makeTextPlane("X", "red", theSize / 10);
+        xChar.position = new Vector3(0.9 * theSize, -0.05 * theSize, 0);
+        var axisY = Mesh.CreateLines("axisY", [
+            Vector3.Zero(), new Vector3(0, theSize, 0), new Vector3( -0.05 * theSize, theSize * 0.95, 0),
+            new Vector3(0, theSize, 0), new Vector3( 0.05 * theSize, theSize * 0.95, 0)
+        ], this._scene);
+        axisY.color = new BABYLON.Color3(0, 1, 0);
+        var yChar = this.makeTextPlane("Y", "green", theSize / 10);
+        yChar.position = new Vector3(0, 0.9 * theSize, -0.05 * theSize);
+        var axisZ = BABYLON.Mesh.CreateLines("axisZ", [
+            Vector3.Zero(), new Vector3(0, 0, theSize * AXIS_STRETCH_Z), new Vector3( 0 , -0.05 * theSize, theSize * 0.95 * AXIS_STRETCH_Z),
+            new Vector3(0, 0, theSize * AXIS_STRETCH_Z), new Vector3( 0, 0.05 * theSize, theSize * 0.95 * AXIS_STRETCH_Z)
+        ], this._scene);
+        axisZ.color = new BABYLON.Color3(0, 0, 1);
+        var zChar = this.makeTextPlane("Z", "blue", theSize / 10);
+        zChar.position = new Vector3(0, 0.05 * theSize, 0.9 * theSize * AXIS_STRETCH_Z);
+    };
 
 
 
