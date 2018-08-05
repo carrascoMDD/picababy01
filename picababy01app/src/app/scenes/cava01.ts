@@ -10,7 +10,6 @@ import {
 
 
 const BORDER_ANGLE = Math.PI;
-const BORDER_RADIUS = 1;
 const BORDER_STEPS_DEFAULT = 32;
 const SHEET_STEPS_DEFAULT  = 96;
 
@@ -25,7 +24,7 @@ export class Cava01 {
     private _borderAngle: double;
     private _borderMaxStepLen: double;
     private _borderNumSteps: int;
-
+    private _sheetNumStruts: int;
 
     private _outerBorderPoints: Vector3[];
     private _outerBorderMesh: Mesh;
@@ -73,15 +72,17 @@ export class Cava01 {
 
         // Add and keep elements
 
-        // Call first cavaBorderNumSteps for the Outer Border which shall set the Angle, and calculate the NumSteps, both of which shall be reused in the inner ond outer sheets
+        // Call first cavaBorderNumSteps_calcAndSet for the Outer Border which shall set the Angle, and calculate the NumSteps, both of which shall be reused in the inner ond outer borders and sheets
         this.cavaBorderNumSteps_calcAndSet(  1, 0.01, BORDER_ANGLE);
+
+        // Call first cavaSheetNumStruts_calcAndSet for the Outer Sheet which shall set the NumStruts, which shall be reused in the inner ond outer sheets
+        this.cavaSheetNumStruts_calcAndSet( 5, 0.01);
 
         this._outerBorderMesh = this.cavaOuterBorder( 1);
         this._outerSheetMesh  = this.cavaOuterSheet( 1, 5);
 
         this._innerBorderMesh = this.cavaInnerBorder( 0.9);
         this._innerSheetMesh  = this.cavaInnerSheet( 0.9, 5);
-
     }
 
 
@@ -112,9 +113,24 @@ export class Cava01 {
 
 
 
+    cavaSheetNumStruts_calcAndSet( theLength: double, theMaxStrutLen: double): int {
+
+        this._sheetNumStruts = SHEET_STEPS_DEFAULT;
+        const aStrutLen = theLength / this._sheetNumStruts;
+        if( aStrutLen > theMaxStrutLen) {
+            this._sheetNumStruts = theLength / theMaxStrutLen;
+            if( !( Math.floor( this._sheetNumStruts) == this._sheetNumStruts)) {
+                this._sheetNumStruts = Math.floor( this._sheetNumStruts) + 1;
+            }
+        }
+
+        return this._sheetNumStruts;
+    }
 
 
-    cavaOuterBorder( theRadius: double): Mesh {
+
+
+        cavaOuterBorder( theRadius: double): Mesh {
         const someBorderPoints = this.cavaOuterBorderPoints( theRadius);
         return MeshBuilder.CreateLines( "cavaOuterBorder01", { points: someBorderPoints});
     }
@@ -229,15 +245,6 @@ export class Cava01 {
 
     cavaSheetVertexData_calc( theRadius: double, theLength: double, theBorderPoints:  Vector3[], theReverseFacets: Boolean): VertexData {
 
-        let aNumStruts = SHEET_STEPS_DEFAULT;
-        const aStrutLen = theLength / aNumStruts;
-        if( aStrutLen > this._borderMaxStepLen) {
-            aNumStruts = theLength / this._borderMaxStepLen;
-            if( !( Math.floor( aNumStruts) == aNumStruts)) {
-                aNumStruts = Math.floor( aNumStruts) + 1;
-            }
-        }
-
         const somePositions: double[] = [ ];
         const someIndices:   int[]    = [ ];
 
@@ -252,10 +259,10 @@ export class Cava01 {
         }
 
         // Add positions for all the struts but the first as positions from the border displaced in Z by a Strut len
-        for( let aStrutIdx=0; aStrutIdx < aNumStruts; aStrutIdx++) {
+        for( let aStrutIdx=0; aStrutIdx < this._sheetNumStruts; aStrutIdx++) {
 
             // Add positions from the border displaced in Z by a Strut lengh. Each triple of these is a point in a strut of the sheet
-            const aZ = aStrutIdx * theLength / aNumStruts;
+            const aZ = aStrutIdx * theLength / this._sheetNumStruts;
             for( let aBorderPointIdx=0; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
                 const aBorderPoint = theBorderPoints[ aBorderPointIdx];
                 somePositions.push( aBorderPoint.x);
@@ -280,19 +287,19 @@ export class Cava01 {
                 |/  facet |
             SnVi-----------SnVj
 
-            if theReverseFacets is false then build facets with points order counter-clock-wise
+            if theReverseFacets is false then build facets with points order counter-clock-wise (outer sheet)
                 facet 0:
                     SmVi, SnVi, SmVj
                 facet 1:
                     SmVj,SnVi, SnVj
 
-          if theReverseFacets is true then build facets with points order clock-wise
+          if theReverseFacets is true then build facets with points order clock-wise (inner sheet)
                 facet 0:
                     SmVi, SmVj, SnVi
                 facet 1:
                     SmVj,SnVj, SnVi
         */
-        for( let aStrutIdx=1; aStrutIdx < aNumStruts; aStrutIdx++) {
+        for( let aStrutIdx=1; aStrutIdx < this._sheetNumStruts; aStrutIdx++) {
 
             for( let aBorderPointIdx=1; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
 
@@ -317,7 +324,6 @@ export class Cava01 {
             }
 
         }
-
 
         const aVertexData = new VertexData();
         aVertexData.positions = somePositions;
