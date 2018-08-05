@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef }   from '@angular/material';
-import { PostService }                     from '../data/post.service';
+import { PostService }                     from '../../data/post.service';
 
 
 

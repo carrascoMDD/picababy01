@@ -20,18 +20,18 @@ import { PostService }             from "../../data/post.service";
 import { PostDialogComponent }     from "../../modals/post-dialog/post-dialog.component";
 import { SidenavService }          from "../../sidenav/sidenav-svce";
 
-import { Scene01Component} from './scene01.component';
+import { Terrain01Component} from './terrain01.component';
 
 import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
-    { path: 'scene01', component: Scene01Component }
+    { path: 'terrain01', component: Terrain01Component }
 ];
 
 
-describe( 'Scene01Component', () => {
-    let component: Scene01Component;
-    let fixture: ComponentFixture<Scene01Component>;
+describe( 'Terrain01Component', () => {
+    let component: Terrain01Component;
+    let fixture: ComponentFixture<Terrain01Component>;
 
 
     beforeEach( async( () => {
@@ -55,7 +55,7 @@ describe( 'Scene01Component', () => {
                 ],
                 declarations: [
                     PostDialogComponent,
-                    Scene01Component,
+                    Terrain01Component,
                     DashboardComponent
                 ],
                 providers:    [
@@ -70,13 +70,13 @@ describe( 'Scene01Component', () => {
 
     beforeEach( async( () => {
         TestBed.configureTestingModule( {
-                                            declarations: [ Scene01Component ]
+                                            declarations: [ Terrain01Component ]
                                         } )
             .compileComponents();
     } ) );
 
     beforeEach( () => {
-        fixture   = TestBed.createComponent( Scene01Component );
+        fixture   = TestBed.createComponent( Terrain01Component );
         component = fixture.componentInstance;
         fixture.detectChanges();
     } );

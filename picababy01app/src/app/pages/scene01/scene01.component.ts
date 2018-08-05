@@ -26,10 +26,10 @@ export class Scene01Component implements OnInit {
     }
 
     ngAfterViewInit() {
-        let game = new Ball01('renderCanvas');
-        game.createScene();
+        let aBall3D = new Ball01('renderCanvas');
+        aBall3D.createScene();
 
-        game.animate();
+        aBall3D.animate();
     }
 
 }

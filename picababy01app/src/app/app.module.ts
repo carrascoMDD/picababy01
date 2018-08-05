@@ -13,6 +13,7 @@ import { SidenavService }          from "./sidenav/sidenav-svce";
 import { WelcomeComponent }        from './pages/welcome/welcome.component';
 import { DashboardComponent }      from './pages/dashboard/dashboard.component';
 import { Scene01Component }        from './pages/scene01/scene01.component';
+import { Terrain01Component }      from './pages/terrain01/terrain01.component';
 
 import { MaterialModule } from './material.module';
 import { AppRouters }     from './app.routes';
@@ -33,6 +34,7 @@ import { ConfirmDialogComponent }  from "./modals/confirm-dialog/confirm-dialog.
             WelcomeComponent,
             DashboardComponent,
             Scene01Component,
+            Terrain01Component,
             PostDialogComponent,
             MustloginAlertComponent,
             ConfirmDialogComponent

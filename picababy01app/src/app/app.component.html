@@ -24,8 +24,14 @@
             <a mat-list-item
                (click)="goPath('/scene01')"
                x-kkrouterLink="/scene01">
-                <mat-icon class="icon">scene01</mat-icon>
+                <mat-icon class="icon">fiber_smart_record</mat-icon>
                 <span class="label">Scene01</span>
+            </a>
+            <a mat-list-item
+               (click)="goPath('/terrain01')"
+               x-kkrouterLink="/terrain01">
+                <mat-icon class="icon">terrain01</mat-icon>
+                <span class="label">Terrain01</span>
             </a>
             <a mat-list-item
                *ngIf="auth.isAuthenticated()"
@@ -81,8 +87,16 @@
                         <a id="domid_scene01_anchor"
                            (click)="goPath('/scene01')"
                            x-kkrouterLink="/scene01">
-                            <mat-icon class="icon">scene01</mat-icon>
+                            <mat-icon class="icon">fiber_smart_record</mat-icon>
                             <span class="label">Scene01</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="domid_terrain01_anchor"
+                           (click)="goPath('/terrain01')"
+                           x-kkrouterLink="/terrain01">
+                            <mat-icon class="icon">terrain01</mat-icon>
+                            <span class="label">Terrain01</span>
                         </a>
                     </li>
                     <li>

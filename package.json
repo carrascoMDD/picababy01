@@ -27,7 +27,9 @@
     },
     "scripts": {},
     "config": {},
-    "dependencies": {},
+    "dependencies": {
+        "earcut": "^2.1.3"
+    },
     "devDependencies": {
         "@angular/cli": "^6.0.8"
     },
