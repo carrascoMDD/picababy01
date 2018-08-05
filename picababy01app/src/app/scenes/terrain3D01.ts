@@ -97,6 +97,7 @@ export class Terrain3D01 {
 
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
         // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
+        // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 70, -70 ), this._scene );
         this._camera = new FreeCamera( 'camera1', new Vector3( 0, 100, 0 ), this._scene );
 
         // target the camera to scene origin
@@ -108,18 +109,6 @@ export class Terrain3D01 {
         // create a basic light, aiming 0,1,0 - meaning, to the sky
         this._light = new HemisphericLight( 'light1', new Vector3( 0, 1, 0 ), this._scene );
 
-/*
-        // create a built-in "sphere" shape; with 16 segments and diameter of 2
-        let sphere = MeshBuilder.CreateSphere( 'sphere1',
-                                               { segments: 16, diameter: 2 }, this._scene );
-
-        // move the sphere upward 1/2 of its height
-        sphere.position.y = 1;
-
-        // create a built-in "ground" shape
-        let ground = MeshBuilder.CreateGround( 'ground1',
-                                               { width: 6, height: 6, subdivisions: 2 }, this._scene );
-*/
         // create a terrain polygon shape
         let someVector3 = this.coordsAsVector3();
         this._parcelasFlat = MeshBuilder.CreatePolygon( 'terrain01',
@@ -127,8 +116,6 @@ export class Terrain3D01 {
 
         this._parcelasExtruded = MeshBuilder.ExtrudePolygon( "terrain01Extruded",
                                                              { shape: someVector3, depth: 20, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
-
-
 
     }
 

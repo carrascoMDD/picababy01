@@ -9,6 +9,7 @@ import { FlexLayoutModule }        from '@angular/flex-layout';
 import { FormsModule }             from '@angular/forms';
 
 import 'hammerjs';
+import { Cava01Component }         from "./pages/cava01/cava01.component";
 import { SidenavService }          from "./sidenav/sidenav-svce";
 import { WelcomeComponent }        from './pages/welcome/welcome.component';
 import { DashboardComponent }      from './pages/dashboard/dashboard.component';
@@ -35,6 +36,7 @@ import { ConfirmDialogComponent }  from "./modals/confirm-dialog/confirm-dialog.
             DashboardComponent,
             Scene01Component,
             Terrain01Component,
+            Cava01Component,
             PostDialogComponent,
             MustloginAlertComponent,
             ConfirmDialogComponent

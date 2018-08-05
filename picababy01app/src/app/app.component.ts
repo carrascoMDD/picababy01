@@ -28,6 +28,8 @@ export class AppComponent implements OnInit {
             console.log( "Route event");
             this.sidenavService.close();
         });
+
+
     }
 
     ngOnInit() {
