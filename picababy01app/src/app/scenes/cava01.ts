@@ -12,8 +12,8 @@ import StandardMaterial = BABYLON.StandardMaterial;
 
 
 
-const AXIS_SIZE  = 1.5;
-const AXIS_STRETCH_Z = 2.5;
+const AXIS_SIZE  = 4;
+const AXIS_STRETCH_Z = 2.8;
 
 const BORDER_ANGLE = Math.PI * ( 7 / 5);
 const BORDER_ANGLE_BEGIN = 0.0 - BORDER_ANGLE / 2;
@@ -32,11 +32,11 @@ const MAXSTEPLEN   = 0.6;
 const MAXSTRUTLEN  = 0.2;
 
 
-const OUTERLENGTH  = 8;
+const OUTERLENGTH  = 10;
 const INNERRADIUS  = 2.5;
-const INNERLENGTH  = 8;
+const INNERLENGTH  = 9.5;
 
-const CAMERA_RADIUS = 10;
+const CAMERA_RADIUS = 12;
 
 
 
@@ -230,7 +230,7 @@ export class Cava01 {
 
         const aCenter = Vector2.Zero();
 
-        for( let anStepIdx=0; anStepIdx < this._borderNumSteps; anStepIdx++) {
+        for( let anStepIdx=0; anStepIdx <= this._borderNumSteps; anStepIdx++) {
             const anAngle = this._borderAngleStart +  this._borderAngle * anStepIdx / this._borderNumSteps;
             const aBorderPoint = this.cavaBorderPoint( aCenter, theRadius, anAngle);
             someBorderPoints.push( aBorderPoint);
