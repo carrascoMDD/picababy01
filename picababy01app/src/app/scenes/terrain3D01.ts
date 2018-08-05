@@ -5,6 +5,7 @@ import {
 
 import { Terrain3D01Coords } from "./terrain01coords"
 import Polygon = BABYLON.Polygon;
+import Mesh = BABYLON.Mesh;
 
 
 
@@ -21,6 +22,7 @@ export class Terrain3D01 {
     private _camera: FreeCamera;
     private _light: Light;
     private _parcelasFlat: Polygon;
+    private _parcelasExtruded: Mesh;
 
 
 
@@ -57,7 +59,7 @@ export class Terrain3D01 {
 
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
         // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
-        this._camera = new FreeCamera( 'camera1', new Vector3( 30, 115, 30 ), this._scene );
+        this._camera = new FreeCamera( 'camera1', new Vector3( 130, 115, 130 ), this._scene );
 
         // target the camera to scene origin
         this._camera.setTarget( Vector3.Zero() );
@@ -84,6 +86,10 @@ export class Terrain3D01 {
         let someVector3 = this.coordsAsVector3();
         this._parcelasFlat = MeshBuilder.CreatePolygon( 'terrain01',
                                                  { shape: someVector3, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
+
+        this._parcelasExtruded = MeshBuilder.ExtrudePolygon( "terrain01Extruded",
+                                                             { shape: someVector3, depth: 20, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
+
 
 
     }
