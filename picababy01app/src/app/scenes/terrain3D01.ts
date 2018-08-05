@@ -1,6 +1,6 @@
 import {
     Engine, Scene, FreeCamera, Light,
-    Vector3, HemisphericLight, MeshBuilder
+    Vector3, HemisphericLight, MeshBuilder, ArcRotateCamera
 } from 'babylonjs';
 
 import { Terrain3D01Coords } from "./terrain01coords"
@@ -8,11 +8,9 @@ import Polygon = BABYLON.Polygon;
 import Mesh = BABYLON.Mesh;
 
 
+const CAMERA_RADIUS = 100;
 
-const SUBSTRACTFROM_X=713250;
-const SUBSTRACTFROM_Y=4361200;
-const FIXEDZ=0;
-
+const EXTRUDEDEPTH = 10;
 
 
 export class Terrain3D01 {
@@ -32,6 +30,56 @@ export class Terrain3D01 {
         this._engine = new Engine( this._canvas, true );
     }
 
+
+
+    createScene(): void {
+        // create a basic BJS Scene object
+        this._scene = new Scene( this._engine );
+
+        /*
+        // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
+        // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
+        // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 70, -70 ), this._scene );
+        this._camera = new FreeCamera( 'camera1', new Vector3( 0, 100, 0 ), this._scene );
+
+        // target the camera to scene origin
+        this._camera.setTarget( Vector3.Zero() );
+
+        // attach the camera to the canvas
+        this._camera.attachControl( this._canvas, false );
+        */
+        var camera = new ArcRotateCamera("cam", -Math.PI * 0.7 / 2, Math.PI  * 0.7  / 2, CAMERA_RADIUS, Vector3.Zero(), this._scene);
+        camera.wheelDeltaPercentage = 0.01;
+        camera.attachControl( this._canvas, true);
+
+
+        // create a basic light, aiming 0,1,0 - meaning, to the sky
+        this._light = new HemisphericLight( 'light1', new Vector3( 0, 1, 0 ), this._scene );
+
+        // create a terrain polygon shape
+        let someVector3 = this.coordsAsVector3();
+        this._parcelasFlat = MeshBuilder.CreatePolygon( 'terrain01',
+                                                        { shape: someVector3, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
+
+        this._parcelasExtruded = MeshBuilder.ExtrudePolygon( "terrain01Extruded",
+                                                             { shape: someVector3, depth: EXTRUDEDEPTH, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
+
+    }
+
+
+
+
+    animate(): void {
+        // run the render loop
+        this._engine.runRenderLoop( () => {
+            this._scene.render();
+        } );
+
+        // the canvas/window resize event handler
+        window.addEventListener( 'resize', () => {
+            this._engine.resize();
+        } );
+    }
 
 
     coordsAsVector3(): Vector3[] {
@@ -91,46 +139,4 @@ export class Terrain3D01 {
     }
 
 
-    createScene(): void {
-        // create a basic BJS Scene object
-        this._scene = new Scene( this._engine );
-
-        // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
-        // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
-        // this._camera = new FreeCamera( 'camera1', new Vector3( 0, 70, -70 ), this._scene );
-        this._camera = new FreeCamera( 'camera1', new Vector3( 0, 100, 0 ), this._scene );
-
-        // target the camera to scene origin
-        this._camera.setTarget( Vector3.Zero() );
-
-        // attach the camera to the canvas
-        this._camera.attachControl( this._canvas, false );
-
-        // create a basic light, aiming 0,1,0 - meaning, to the sky
-        this._light = new HemisphericLight( 'light1', new Vector3( 0, 1, 0 ), this._scene );
-
-        // create a terrain polygon shape
-        let someVector3 = this.coordsAsVector3();
-        this._parcelasFlat = MeshBuilder.CreatePolygon( 'terrain01',
-                                                 { shape: someVector3, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
-
-        this._parcelasExtruded = MeshBuilder.ExtrudePolygon( "terrain01Extruded",
-                                                             { shape: someVector3, depth: 20, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this._scene );
-
-    }
-
-
-
-
-    animate(): void {
-        // run the render loop
-        this._engine.runRenderLoop( () => {
-            this._scene.render();
-        } );
-
-        // the canvas/window resize event handler
-        window.addEventListener( 'resize', () => {
-            this._engine.resize();
-        } );
-    }
 }

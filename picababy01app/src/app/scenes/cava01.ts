@@ -9,11 +9,18 @@ import {
 
 
 
-const BORDER_ANGLE = Math.PI * ( 7 / 5);
-const BORDER_STEPS_DEFAULT = 32;
-const SHEET_STEPS_DEFAULT  = 96;
+
+
+const BORDER_ANGLE = Math.PI * ( 8 / 5);
+const BORDER_STEPS_DEFAULT = 128;
+const SHEET_STEPS_DEFAULT  = 1;
 
 const OUTERRADIUS  = 1;
+const MAXSTEPLEN   = 0.6;
+
+const MAXSTRUTLEN  = 0.2;
+
+
 const OUTERLENGTH  = 3;
 const INNERRADIUS  = 0.9;
 const INNERLENGTH  = 3;
@@ -95,10 +102,10 @@ export class Cava01 {
         // Add and keep elements
 
         // Call first cavaBorderNumSteps_calcAndSet for the Outer Border which shall set the Angle, and calculate the NumSteps, both of which shall be reused in the inner ond outer borders and sheets
-        this.cavaBorderNumSteps_calcAndSet(  1, 0.01, BORDER_ANGLE);
+        this.cavaBorderNumSteps_calcAndSet(  OUTERRADIUS, MAXSTEPLEN, BORDER_ANGLE);
 
         // Call first cavaSheetNumStruts_calcAndSet for the Outer Sheet which shall set the NumStruts, which shall be reused in the inner ond outer sheets
-        this.cavaSheetNumStruts_calcAndSet( 5, 0.01);
+        this.cavaSheetNumStruts_calcAndSet( OUTERLENGTH, MAXSTRUTLEN);
 
         this._outerBorderMesh = this.cavaOuterBorder( OUTERRADIUS);
         this._outerSheetMesh  = this.cavaOuterSheet( OUTERRADIUS, OUTERLENGTH);
@@ -310,7 +317,7 @@ export class Cava01 {
         }
 
         // Add positions for all the struts but the first as positions from the border displaced in Z by a Strut len
-        for( let aStrutIdx=0; aStrutIdx < this._sheetNumStruts; aStrutIdx++) {
+        for( let aStrutIdx=0; aStrutIdx <= this._sheetNumStruts; aStrutIdx++) {
 
             // Add positions from the border displaced in Z by a Strut lengh. Each triple of these is a point in a strut of the sheet
             this._lastStrutZ = aStrutIdx * theLength / this._sheetNumStruts;
@@ -351,7 +358,8 @@ export class Cava01 {
                 facet 1:
                     SmVj,SnVj, SnVi
         */
-        for( let aStrutIdx=1; aStrutIdx < this._sheetNumStruts; aStrutIdx++) {
+        const aNumIterStruts = this._sheetNumStruts + 1;
+        for( let aStrutIdx=1; aStrutIdx <= aNumIterStruts; aStrutIdx++) {
 
             for( let aBorderPointIdx=1; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
 

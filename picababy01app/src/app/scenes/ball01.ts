@@ -1,11 +1,11 @@
 import {
     Engine, Scene, FreeCamera, Light,
-    Vector3, HemisphericLight, MeshBuilder
+    Vector3, HemisphericLight, MeshBuilder, ArcRotateCamera
 } from 'babylonjs';
 
 
 
-
+const CAMERA_RADIUS = 10;
 
 
 export class Ball01 {
@@ -30,6 +30,7 @@ export class Ball01 {
         // create a basic BJS Scene object
         this._scene = new Scene( this._engine );
 
+        /*
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
         this._camera = new FreeCamera( 'camera1', new Vector3( 0, 5, -10 ), this._scene );
 
@@ -38,6 +39,12 @@ export class Ball01 {
 
         // attach the camera to the canvas
         this._camera.attachControl( this._canvas, false );
+        */
+
+        var camera = new ArcRotateCamera("cam",  -Math.PI * 0.7 / 2, Math.PI  * 0.7  / 2, CAMERA_RADIUS, Vector3.Zero(), this._scene);
+        camera.wheelDeltaPercentage = 0.01;
+        camera.attachControl( this._canvas, true);
+
 
         // create a basic light, aiming 0,1,0 - meaning, to the sky
         this._light = new HemisphericLight( 'light1', new Vector3( 0, 1, 0 ), this._scene );
