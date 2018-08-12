@@ -11,6 +11,7 @@ import {
 import { TooledTunnelParms01 } from "./tooledTunnelParms01";
 
 
+const NUMSTRUTS_MIN = 3;
 
 
 export class TooledTunnel01 {
@@ -23,25 +24,23 @@ export class TooledTunnel01 {
     private _camera: ArcRotateCamera;
     private _light: Light;
 
-    private _borderAngleStart: double;
-    private _borderAngleStop: double;
-    private _borderNumSteps: int;
-    private _sheetNumStruts: int;
-    private _lastStrutZ: double;
+    public borderAngleStart: double;
+    public borderAngleStop: double;
+    public borderNumSteps: int;
+    public sheetNumStruts: int;
+    public lastStrutZ: double;
 
-    private _outerRadius: double;
     private _outerBorderPoints: Vector3[];
     private _outerBorderMesh: Mesh;
     private _outerSheetVertexData: VertexData;
     private _outerSheetMesh: Mesh;
-    private _outerLastStrutZ: double;
+    public outerLastStrutZ: double;
 
-    private _innerRadius: double;
     private _innerBorderPoints: Vector3[];
     private _innerBorderMesh:Mesh;
     private _innerSheetVertexData: VertexData;
     private _innerSheetMesh: Mesh;
-    private _innerLastStrutZ: double;
+    public innerLastStrutZ: double;
 
     private _nearCapVertexData: VertexData;
     private _nearCapMesh: Mesh;
@@ -72,7 +71,7 @@ export class TooledTunnel01 {
 
 
     animate(): void {
-        // run the render loop
+        // run the render loopfv
         this._engine.runRenderLoop( () => {
             this._scene.render();
         } );
@@ -185,21 +184,19 @@ export class TooledTunnel01 {
 
     resetCalculated(): void {
 
-        this._borderAngleStart = null;
-        this._borderAngleStop = null;
-        this._borderNumSteps = null;
-        this._sheetNumStruts = null;
-        this._lastStrutZ = null;
+        this.borderAngleStart = null;
+        this.borderAngleStop  = null;
+        this.borderNumSteps   = null;
+        this.sheetNumStruts   = null;
+        this.lastStrutZ       = null;
 
-        this._outerRadius = null;
-        this._outerBorderPoints = null;
+        this._outerBorderPoints    = null;
         this._outerSheetVertexData = null;
-        this._outerLastStrutZ = null;
+        this.outerLastStrutZ      = null;
 
-        this._innerRadius = null;
-        this._innerBorderPoints = null;
+        this._innerBorderPoints    = null;
         this._innerSheetVertexData = null;
-        this._innerLastStrutZ = null;
+        this.innerLastStrutZ       = null;
 
         this._nearCapVertexData = null;
         this._farCapVertexData = null;
@@ -217,8 +214,8 @@ export class TooledTunnel01 {
         const aHalfBorderAngle  = this.tooledTunnelParms.borderAngle / 2.0;
         const aBorderAngleBegin = 0.0 - aHalfBorderAngle;
 
-        this._borderAngleStart = aBorderAngleBegin - this.tooledTunnelParms.borderAngleRotate;
-        this._borderAngleStop  = this._borderAngleStart + this.tooledTunnelParms.borderAngle;
+        this.borderAngleStart = aBorderAngleBegin - this.tooledTunnelParms.borderAngleRotate;
+        this.borderAngleStop  = this.borderAngleStart + this.tooledTunnelParms.borderAngle;
     }
 
 
@@ -230,31 +227,34 @@ export class TooledTunnel01 {
         const aCircleLen = 2 * Math.PI * this.tooledTunnelParms.outerRadius;
         const anArcLen = aCircleLen * ( this.tooledTunnelParms.borderAngle / ( 2 * Math.PI));
 
-        this._borderNumSteps = this.tooledTunnelParms.borderStepsDefault;
-        const aTileLen = anArcLen / this._borderNumSteps;
+        this.borderNumSteps = this.tooledTunnelParms.borderStepsDefault;
+        const aTileLen      = anArcLen / this.borderNumSteps;
         if( aTileLen > this.tooledTunnelParms.borderMaxStepLen) {
-            this._borderNumSteps = anArcLen / this.tooledTunnelParms.borderMaxStepLen;
-            if( !( Math.floor( this._borderNumSteps) == this._borderNumSteps)) {
-                this._borderNumSteps = Math.floor( this._borderNumSteps) + 1;
+            this.borderNumSteps = anArcLen / this.tooledTunnelParms.borderMaxStepLen;
+            if( !( Math.floor( this.borderNumSteps) == this.borderNumSteps)) {
+                this.borderNumSteps = Math.floor( this.borderNumSteps) + 1;
             }
         }
 
-        return this._borderNumSteps;
+        return this.borderNumSteps;
     }
 
 
     mazeSheetNumStruts_calcAndSet( ): int {
 
-        this._sheetNumStruts = this.tooledTunnelParms.sheetStepsDefault;
-        const aStrutLen = this.tooledTunnelParms.outerLength / this._sheetNumStruts;
+        this.sheetNumStruts = this.tooledTunnelParms.sheetStepsDefault;
+        const aStrutLen     = ( 1.0 * this.tooledTunnelParms.outerLength) / this.sheetNumStruts;
         if( aStrutLen > this.tooledTunnelParms.sheetMaxStrutsLen) {
-            this._sheetNumStruts = this.tooledTunnelParms.outerLength / this.tooledTunnelParms.sheetMaxStrutsLen;
-            if( !( Math.floor( this._sheetNumStruts) == this._sheetNumStruts)) {
-                this._sheetNumStruts = Math.floor( this._sheetNumStruts) + 1;
+            this.sheetNumStruts = ( 1.0 * this.tooledTunnelParms.outerLength) / this.tooledTunnelParms.sheetMaxStrutsLen;
+            if( !( Math.floor( this.sheetNumStruts) == this.sheetNumStruts)) {
+                this.sheetNumStruts = Math.floor( this.sheetNumStruts) + 1;
             }
         }
 
-        return this._sheetNumStruts;
+        if( this.sheetNumStruts < NUMSTRUTS_MIN) {
+            this.sheetNumStruts = NUMSTRUTS_MIN;
+        }
+        return this.sheetNumStruts;
     }
 
 
@@ -272,7 +272,6 @@ export class TooledTunnel01 {
             return this._outerBorderPoints;
         }
 
-        this._outerRadius = theRadius;
 
         this._outerBorderPoints = this.mazeBorderPoints_calc( theRadius);
         return this._outerBorderPoints;
@@ -292,8 +291,6 @@ export class TooledTunnel01 {
             return this._innerBorderPoints;
         }
 
-        this._innerRadius = theRadius;
-
         this._innerBorderPoints = this.mazeBorderPoints_calc( theRadius);
         return this._innerBorderPoints;
     }
@@ -305,8 +302,8 @@ export class TooledTunnel01 {
 
         const aCenter = Vector2.Zero();
 
-        for( let anStepIdx=0; anStepIdx <= this._borderNumSteps; anStepIdx++) {
-            const anAngle = this._borderAngleStart +  this.tooledTunnelParms.borderAngle * anStepIdx / this._borderNumSteps;
+        for( let anStepIdx=0; anStepIdx <= this.borderNumSteps; anStepIdx++) {
+            const anAngle = this.borderAngleStart + this.tooledTunnelParms.borderAngle * anStepIdx / this.borderNumSteps;
             const aBorderPoint = this.mazeBorderPoint( aCenter, theRadius, anAngle);
             someBorderPoints.push( aBorderPoint);
         }
@@ -363,7 +360,7 @@ export class TooledTunnel01 {
             false /* theReverseFacets */,
             true /* theBuildFloor */
         );
-        this._outerLastStrutZ = this._lastStrutZ;
+        this.outerLastStrutZ = this.lastStrutZ;
         return this._outerSheetVertexData;
     }
 
@@ -381,7 +378,7 @@ export class TooledTunnel01 {
             true  /* theReverseFacets */,
             true /* theBuildFloor */
         );
-        this._innerLastStrutZ = this._lastStrutZ;
+        this.innerLastStrutZ       = this.lastStrutZ;
         return this._innerSheetVertexData;
     }
 
@@ -408,15 +405,15 @@ export class TooledTunnel01 {
         }
 
         // Add positions for all the struts but the first as positions from the border displaced in Z by a Strut len
-        for( let aStrutIdx=0; aStrutIdx <= this._sheetNumStruts; aStrutIdx++) {
+        for( let aStrutIdx=0; aStrutIdx <= this.sheetNumStruts; aStrutIdx++) {
 
             // Add positions from the border displaced in Z by a Strut lengh. Each triple of these is a point in a strut of the sheet
-            this._lastStrutZ = aStrutIdx * theLength / this._sheetNumStruts;
+            this.lastStrutZ = 1.0 * aStrutIdx * theLength / this.sheetNumStruts;
             for( let aBorderPointIdx=0; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
                 const aBorderPoint = theBorderPoints[ aBorderPointIdx];
                 somePositions.push( aBorderPoint.x);
                 somePositions.push( aBorderPoint.y);
-                somePositions.push( this._lastStrutZ);
+                somePositions.push( this.lastStrutZ);
             }
         }
 
@@ -449,7 +446,7 @@ export class TooledTunnel01 {
                 facet 1:
                     SmVj,SnVj, SnVi
         */
-        const aNumIterStruts = this._sheetNumStruts + 1;
+        const aNumIterStruts = this.sheetNumStruts + 1;
         for( let aStrutIdx=1; aStrutIdx <= aNumIterStruts; aStrutIdx++) {
 
             for( let aBorderPointIdx=1; aBorderPointIdx < aNumBorderPoints; aBorderPointIdx++) {
@@ -573,7 +570,7 @@ export class TooledTunnel01 {
             return this._farCapVertexData;
         }
 
-        this._farCapVertexData = this.mazeCapVertexData_calc(   this._outerLastStrutZ, this._innerLastStrutZ, false  /* theReverseFacets */);
+        this._farCapVertexData = this.mazeCapVertexData_calc( this.outerLastStrutZ, this.innerLastStrutZ, false  /* theReverseFacets */);
         return this._farCapVertexData;
     }
 
@@ -700,7 +697,7 @@ export class TooledTunnel01 {
             return this._floorFarCapVertexData;
         }
 
-        this._floorFarCapVertexData = this.mazeFloorCapVertexData_calc(   this._outerLastStrutZ, this._innerLastStrutZ, false  /* theReverseFacets */);
+        this._floorFarCapVertexData = this.mazeFloorCapVertexData_calc( this.outerLastStrutZ, this.innerLastStrutZ, false  /* theReverseFacets */);
         return this._floorFarCapVertexData;
     }
 

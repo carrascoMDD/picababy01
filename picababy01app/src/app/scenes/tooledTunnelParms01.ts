@@ -7,10 +7,10 @@ import {
 const BORDER_ANGLE = Math.PI * ( 7 / 5);
 const BORDER_ANGLE_ROTATE = 0.0 - Math.PI / 2;
 const BORDER_STEPS_DEFAULT = 64;
-const MAXSTEPLEN   = 0.6;
+const MAXSTEPLEN   = 1;
 
 const SHEET_STEPS_DEFAULT  = 1;
-const MAXSTRUTLEN  = 0.2;
+const MAXSTRUTLEN  = 10;
 
 const OUTERRADIUS  = 3;
 const OUTERLENGTH  = 10;

@@ -9,6 +9,10 @@ import { FlexLayoutModule }        from '@angular/flex-layout';
 import { FormsModule }             from '@angular/forms';
 
 import 'hammerjs';
+
+
+import { DegreesPipe }         from "./pipes/degreesPipe";
+
 import { Cava01Component }         from "./pages/cava01/cava01.component";
 import { Maze01Component }         from "./pages/maze01/maze01.component";
 import { TunnelTool01Component }   from "./pages/tunneltool01/tunneltool01.component";
@@ -34,6 +38,7 @@ import { ConfirmDialogComponent }  from "./modals/confirm-dialog/confirm-dialog.
     {
         declarations:    [
             AppComponent,
+            DegreesPipe,
             WelcomeComponent,
             DashboardComponent,
             Scene01Component,

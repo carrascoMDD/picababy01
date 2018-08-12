@@ -12,61 +12,59 @@
                 <form >
                     <div class="container">
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_borderAngle"
+                            <input id="domid_form_tunnelparameters_input_borderAngle" type="number"
                                    matInput placeholder="borderAngle" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderAngle" name="borderAngle" required>
+                            <input readonly id="domid_form_tunnelparameters_input_borderAngle_degrees"
+                                   matInput placeholder="borderAngleDegrees" [ngModel]="tunnelTool3D01.tooledTunnelParms.borderAngle | degrees" name="borderAngleDegrees" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_borderAngleRotate"
+                            <input id="domid_form_tunnelparameters_input_borderAngleRotate" type="number"
                                    matInput placeholder="borderAngleRotate" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderAngleRotate" name="borderAngleRotate" required>
+                            <input readonly id="domid_form_tunnelparameters_input_borderAngleRotate_degrees"
+                                   matInput placeholder="borderAngleRotateDegrees" [ngModel]="tunnelTool3D01.tooledTunnelParms.borderAngleRotate | degrees" name="borderAngleRotateDegrees" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_borderStepsDefault"
+                            <input id="domid_form_tunnelparameters_input_borderStepsDefault" type="number"
                                    matInput placeholder="borderStepsDefault" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderStepsDefault" name="borderStepsDefault" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_borderMaxStepLen"
+                            <input id="domid_form_tunnelparameters_input_borderMaxStepLen" type="number"
                                    matInput placeholder="borderMaxStepLen" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderMaxStepLen" name="borderMaxStepLen" required>
                         </mat-form-field>
-                    </div>
-                    <div class="container">
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_sheetStepsDefault"
+                            <input id="domid_form_tunnelparameters_input_sheetStepsDefault" type="number"
                                    matInput placeholder="sheetStepsDefault" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.sheetStepsDefault" name="sheetStepsDefault" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_sheetMaxStrutsLen"
+                            <input id="domid_form_tunnelparameters_input_sheetMaxStrutsLen" type="number"
                                    matInput placeholder="sheetMaxStrutsLen" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.sheetMaxStrutsLen" name="sheetMaxStrutsLen" required>
                         </mat-form-field>
-                    </div>
-                    <div class="container">
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_outerRadius"
+                            <input id="domid_form_tunnelparameters_input_outerRadius" type="number"
                                    matInput placeholder="outerRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.outerRadius" name="outerRadius" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_outerLength"
+                            <input id="domid_form_tunnelparameters_input_outerLength" type="number"
                                    matInput placeholder="outerLength" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.outerLength" name="outerLength" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_innerRadius"
+                            <input id="domid_form_tunnelparameters_input_innerRadius" type="number"
                                    matInput placeholder="innerRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.innerRadius" name="innerRadius" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_innerLength"
+                            <input id="domid_form_tunnelparameters_input_innerLength" type="number"
                                    matInput placeholder="innerLength" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.innerLength" name="innerLength" required>
                         </mat-form-field>
-                    </div>
-                    <div class="container">
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_axisSize"
+                            <input id="domid_form_tunnelparameters_input_axisSize" type="number"
                                    matInput placeholder="axisSize" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.axisSize" name="axisSize" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_axisStretchZ"
+                            <input id="domid_form_tunnelparameters_input_axisStretchZ" type="number"
                                    matInput placeholder="axisStretchZ" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.axisStretchZ" name="axisStretchZ" required>
                         </mat-form-field>
                         <mat-form-field >
-                            <input id="domid_form_tunnelparameters_input_cameraRadius"
+                            <input id="domid_form_tunnelparameters_input_cameraRadius" type="number"
                                    matInput placeholder="cameraRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.cameraRadius" name="cameraRadius" required>
                         </mat-form-field>
                     </div>
@@ -77,6 +75,53 @@
             </mat-card-actions>
         </mat-card>
     </div>
+    
+    <div class="container">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Tunnel calculated values</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form >
+                    <div class="container">
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_borderAngleStart"
+                                   matInput placeholder="borderAngleStart" [ngModel]="tunnelTool3D01.borderAngleStart" name="borderAngleStart" required>
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_borderAngleStartDegrees"
+                                   matInput placeholder="borderAngleStartDegrees" [ngModel]="tunnelTool3D01.borderAngleStart | degrees" name="borderAngleStartDegrees" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_borderAngleStop"
+                                   matInput placeholder="borderAngleStop" [ngModel]="tunnelTool3D01.borderAngleStop" name="borderAngleStop" required>
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_borderAngleStopDegrees"
+                                   matInput placeholder="borderAngleStopDegrees" [ngModel]="tunnelTool3D01.borderAngleStop | degrees" name="borderAngleStopDegrees" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_borderNumSteps"
+                                   matInput placeholder="borderNumSteps" [ngModel]="tunnelTool3D01.borderNumSteps" name="borderNumSteps" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_sheetNumStruts"
+                                   matInput placeholder="sheetNumStruts" [ngModel]="tunnelTool3D01.sheetNumStruts" name="sheetNumStruts" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_lastStrutZ"
+                                   matInput placeholder="lastStrutZ" [ngModel]="tunnelTool3D01.lastStrutZ" name="lastStrutZ" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_outerLastStrutZ"
+                                   matInput placeholder="outerLastStrutZ" [ngModel]="tunnelTool3D01.outerLastStrutZ" name="outerLastStrutZ" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input readonly id="domid_form_tunnelcalculatedvalues_inputrdonly_innerLastStrutZ"
+                                   matInput placeholder="innerLastStrutZ" [ngModel]="tunnelTool3D01.innerLastStrutZ" name="innerLastStrutZ" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
 </div>
 
 
