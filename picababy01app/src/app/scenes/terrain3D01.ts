@@ -48,7 +48,8 @@ export class Terrain3D01 {
         // attach the camera to the canvas
         this._camera.attachControl( this._canvas, false );
         */
-        var camera = new ArcRotateCamera("cam", -Math.PI * 0.7 / 2, Math.PI  * 0.7  / 2, CAMERA_RADIUS, Vector3.Zero(), this._scene);
+        //var camera = new ArcRotateCamera("cam", -Math.PI * 0.7 / 2, Math.PI  * 0.7  / 2, CAMERA_RADIUS, Vector3.Zero(), this._scene);
+        var camera = new ArcRotateCamera("cam", -Math.PI / 2,0 , CAMERA_RADIUS, Vector3.Zero(), this._scene);
         camera.wheelDeltaPercentage = 0.01;
         camera.attachControl( this._canvas, true);
 

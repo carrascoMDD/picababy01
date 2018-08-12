@@ -20,18 +20,18 @@ import { PostService }             from "../../data/post.service";
 import { PostDialogComponent }     from "../../modals/post-dialog/post-dialog.component";
 import { SidenavService }          from "../../sidenav/sidenav-svce";
 
-import { Cava01Component} from './cava01.component';
+import { TunnelTool01Component} from './tunneltool01.component';
 
 import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
-    { path: 'cava01', component: Cava01Component }
+    { path: 'tunneltool01', component: TunnelTool01Component }
 ];
 
 
-describe( 'Cava01Component', () => {
-    let component: Cava01Component;
-    let fixture: ComponentFixture<Cava01Component>;
+describe( 'TunnelTool01Component', () => {
+    let component: TunnelTool01Component;
+    let fixture: ComponentFixture<TunnelTool01Component>;
 
 
     beforeEach( async( () => {
@@ -55,7 +55,7 @@ describe( 'Cava01Component', () => {
                 ],
                 declarations: [
                     PostDialogComponent,
-                    Cava01Component,
+                    TunnelTool01Component,
                     DashboardComponent
                 ],
                 providers:    [
@@ -70,13 +70,13 @@ describe( 'Cava01Component', () => {
 
     beforeEach( async( () => {
         TestBed.configureTestingModule( {
-                                            declarations: [ Cava01Component ]
+                                            declarations: [ TunnelTool01Component ]
                                         } )
             .compileComponents();
     } ) );
 
     beforeEach( () => {
-        fixture   = TestBed.createComponent( Cava01Component );
+        fixture   = TestBed.createComponent( TunnelTool01Component );
         component = fixture.componentInstance;
         fixture.detectChanges();
     } );

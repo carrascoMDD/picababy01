@@ -10,6 +10,8 @@ import { FormsModule }             from '@angular/forms';
 
 import 'hammerjs';
 import { Cava01Component }         from "./pages/cava01/cava01.component";
+import { Maze01Component }         from "./pages/maze01/maze01.component";
+import { TunnelTool01Component }   from "./pages/tunneltool01/tunneltool01.component";
 import { SidenavService }          from "./sidenav/sidenav-svce";
 import { WelcomeComponent }        from './pages/welcome/welcome.component';
 import { DashboardComponent }      from './pages/dashboard/dashboard.component';
@@ -37,6 +39,8 @@ import { ConfirmDialogComponent }  from "./modals/confirm-dialog/confirm-dialog.
             Scene01Component,
             Terrain01Component,
             Cava01Component,
+            Maze01Component,
+            TunnelTool01Component,
             PostDialogComponent,
             MustloginAlertComponent,
             ConfirmDialogComponent

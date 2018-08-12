@@ -1,10 +1,12 @@
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { Cava01Component }      from "./pages/cava01/cava01.component";
-import { Scene01Component }     from "./pages/scene01/scene01.component";
-import { Terrain01Component }   from "./pages/terrain01/terrain01.component";
-import { WelcomeComponent }     from './pages/welcome/welcome.component';
-import { DashboardComponent }   from './pages/dashboard/dashboard.component';
+import { NgModule }              from '@angular/core';
+import { RouterModule, Routes }  from '@angular/router';
+import { Cava01Component }       from "./pages/cava01/cava01.component";
+import { Maze01Component }       from "./pages/maze01/maze01.component";
+import { Scene01Component }      from "./pages/scene01/scene01.component";
+import { Terrain01Component }    from "./pages/terrain01/terrain01.component";
+import { TunnelTool01Component } from "./pages/tunneltool01/tunneltool01.component";
+import { WelcomeComponent }      from './pages/welcome/welcome.component';
+import { DashboardComponent }    from './pages/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -12,7 +14,10 @@ const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'scene01', component: Scene01Component},
     { path: 'terrain01', component: Terrain01Component},
-    { path: 'cava01', component: Cava01Component}
+    { path: 'cava01', component: Cava01Component},
+    { path: 'maze01', component: Maze01Component},
+    { path: 'tunneltool01', component: TunnelTool01Component},
+
 ];
 
 /*

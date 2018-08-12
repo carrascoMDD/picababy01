@@ -26,7 +26,7 @@ export class Terrain01Component implements OnInit {
     }
 
     ngAfterViewInit() {
-        let aTerrain3D01 = new Terrain3D01('renderCanvas');
+        const aTerrain3D01 = new Terrain3D01('renderCanvas');
         aTerrain3D01.createScene();
 
         aTerrain3D01.animate();

@@ -1,0 +1,85 @@
+<div style="text-align:center">
+    <h1>PicaBaby01 TunnelTool01</h1>
+    <p>
+        Instrumented model of a parametric subterranean tunnel to be used as a maze module under the dwelling.
+    </p>
+    <div class="container">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Tunnel parameters</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form >
+                    <div class="container">
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_borderAngle"
+                                   matInput placeholder="borderAngle" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderAngle" name="borderAngle" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_borderAngleRotate"
+                                   matInput placeholder="borderAngleRotate" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderAngleRotate" name="borderAngleRotate" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_borderStepsDefault"
+                                   matInput placeholder="borderStepsDefault" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderStepsDefault" name="borderStepsDefault" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_borderMaxStepLen"
+                                   matInput placeholder="borderMaxStepLen" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.borderMaxStepLen" name="borderMaxStepLen" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="container">
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_sheetStepsDefault"
+                                   matInput placeholder="sheetStepsDefault" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.sheetStepsDefault" name="sheetStepsDefault" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_sheetMaxStrutsLen"
+                                   matInput placeholder="sheetMaxStrutsLen" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.sheetMaxStrutsLen" name="sheetMaxStrutsLen" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="container">
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_outerRadius"
+                                   matInput placeholder="outerRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.outerRadius" name="outerRadius" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_outerLength"
+                                   matInput placeholder="outerLength" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.outerLength" name="outerLength" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_innerRadius"
+                                   matInput placeholder="innerRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.innerRadius" name="innerRadius" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_innerLength"
+                                   matInput placeholder="innerLength" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.innerLength" name="innerLength" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="container">
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_axisSize"
+                                   matInput placeholder="axisSize" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.axisSize" name="axisSize" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_axisStretchZ"
+                                   matInput placeholder="axisStretchZ" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.axisStretchZ" name="axisStretchZ" required>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <input id="domid_form_tunnelparameters_input_cameraRadius"
+                                   matInput placeholder="cameraRadius" [(ngModel)]="tunnelTool3D01.tooledTunnelParms.cameraRadius" name="cameraRadius" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="updateScene()" color="primary"> <mat-icon>update</mat-icon> Update scene</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+
+<canvas id="renderCanvas"></canvas>
+
+

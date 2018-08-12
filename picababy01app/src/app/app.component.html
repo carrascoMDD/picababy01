@@ -40,6 +40,18 @@
                 <span class="label">Cava01</span>
             </a>
             <a mat-list-item
+               (click)="goPath('/maze01')"
+               x-kkrouterLink="/maze01">
+                <mat-icon class="icon">view_quilt</mat-icon>
+                <span class="label">Maze01</span>
+            </a>
+            <a mat-list-item
+               (click)="goPath('/tunneltool01')"
+               x-kkrouterLink="/tunneltool01">
+                <mat-icon class="icon">flip_to_front</mat-icon>
+                <span class="label">TunnelTool01</span>
+            </a>
+            <a mat-list-item
                *ngIf="auth.isAuthenticated()"
                (click)="doLogout()" type="button">
                 <mat-icon class="icon">input</mat-icon>
@@ -111,6 +123,22 @@
                            x-kkrouterLink="/cava01">
                             <mat-icon class="icon">vignette</mat-icon>
                             <span class="label">Cava01</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="domid_maze01_anchor"
+                           (click)="goPath('/maze01')"
+                           x-kkrouterLink="/maze01">
+                            <mat-icon class="icon">view_quilt</mat-icon>
+                            <span class="label">Maze01</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="domid_tunneltool01_anchor"
+                           (click)="goPath('/tunneltool01')"
+                           x-kkrouterLink="/tunneltool01">
+                            <mat-icon class="icon">flip_to_front</mat-icon>
+                            <span class="label">TunnelTool01</span>
                         </a>
                     </li>
                     <li>

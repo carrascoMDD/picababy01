@@ -26,7 +26,7 @@ export class Cava01Component implements OnInit {
     }
 
     ngAfterViewInit() {
-        let aCava3D01 = new Cava01('renderCanvas');
+        const aCava3D01 = new Cava01('renderCanvas');
         aCava3D01.createScene();
 
         aCava3D01.animate();

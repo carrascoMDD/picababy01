@@ -26,7 +26,7 @@ export class Scene01Component implements OnInit {
     }
 
     ngAfterViewInit() {
-        let aBall3D = new Ball01('renderCanvas');
+        const aBall3D = new Ball01('renderCanvas');
         aBall3D.createScene();
 
         aBall3D.animate();
